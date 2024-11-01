@@ -1,5 +1,10 @@
 load_local: True
 
+etl_pipeline:
+  run_extraction: True
+  run_transformation: True
+  run_loading: True
+
 file_types:
   valid_file_extensions:
     xls: "application/vnd.ms-excel"
