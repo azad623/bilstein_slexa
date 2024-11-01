@@ -1,10 +1,10 @@
-2024-10-30 16:58:11,838 - <Bilstein SLExA ETL> - INFO - Starting processing for file: /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 40-2024 - 24.09.27.xlsx
-2024-10-30 16:58:11,838 - <Bilstein SLExA ETL> - INFO - << Step 1: Loading Excel from from pre-define location >>
-2024-10-30 16:58:11,838 - <Bilstein SLExA ETL> - INFO - The source file is loading from local repository
-2024-10-30 16:58:11,993 - <Bilstein SLExA ETL> - INFO - DataFrame is created successfully with the shape:(166, 25)
-2024-10-30 16:58:11,993 - <Bilstein SLExA ETL> - INFO - << Step 3: Validate dataframe layout against pre-defined source schemas >>
+2024-11-01 10:47:59,377 - <Bilstein SLExA ETL> - INFO - Starting processing for file: /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 40-2024 - 24.09.27.xlsx
+2024-11-01 10:47:59,377 - <Bilstein SLExA ETL> - INFO - << Step 1: Loading Excel from from pre-define location >>
+2024-11-01 10:47:59,377 - <Bilstein SLExA ETL> - INFO - The source file is loading from local repository
+2024-11-01 10:47:59,455 - <Bilstein SLExA ETL> - INFO - DataFrame is created successfully with the shape:(166, 25)
+2024-11-01 10:47:59,455 - <Bilstein SLExA ETL> - INFO - << Step 3: Validate dataframe layout against pre-defined source schemas >>
 
-2024-10-30 16:58:11,994 - <Bilstein SLExA ETL> - INFO - Index(['Werk', 'Lagerort', 'Material', 'Güte(Fertigung)', 'Güte-Tex',
+2024-11-01 10:47:59,455 - <Bilstein SLExA ETL> - INFO - Index(['Werk', 'Lagerort', 'Material', 'Güte(Fertigung)', 'Güte-Tex',
        'HF-Dicke', 'HF-Breite', 'HF-Länge', 'HF-Dicke.1', 'HF-Breite.1',
        'harge', 'Erstelltam', 'Frei verwendbar', 'Basismengeneinheit',
        'Vertriebsbeleg', 'Position (SD)', 'Materialart', 'Materialkurztext',
@@ -12,8 +12,9 @@
        'Walzzustand (Fertigung)', 'disponiert', 'Wiederverwertung Ausfall',
        'Wiederverwertung Ausfall.1'],
       dtype='object')
-2024-10-30 16:58:11,998 - <Bilstein SLExA ETL> - INFO - Renaming column 'Güte(Fertigung)' to 'Güte (Fertigung)' (similarity: 97%)
-2024-10-30 16:58:12,000 - <Bilstein SLExA ETL> - INFO - Renaming column 'Güte-Tex' to 'Güte-Text' (similarity: 94%)
-2024-10-30 16:58:12,006 - <Bilstein SLExA ETL> - INFO - Renaming column 'harge' to 'Charge' (similarity: 91%)
-2024-10-30 16:58:12,007 - <Bilstein SLExA ETL> - INFO - Renaming column 'Erstelltam' to 'Erstellt am' (similarity: 95%)
-2024-10-30 16:58:14,900 - <Bilstein SLExA ETL> - INFO - Schema match found for /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 40-2024 - 24.09.27.xlsx with schema source_bilstein_schema1_v1.json
+2024-11-01 10:47:59,457 - <Bilstein SLExA ETL> - INFO - Renaming column 'Güte(Fertigung)' to 'Güte (Fertigung)' (similarity: 97%)
+2024-11-01 10:47:59,458 - <Bilstein SLExA ETL> - INFO - Renaming column 'Güte-Tex' to 'Güte-Text' (similarity: 94%)
+2024-11-01 10:47:59,459 - <Bilstein SLExA ETL> - INFO - Renaming column 'harge' to 'Charge' (similarity: 91%)
+2024-11-01 10:47:59,460 - <Bilstein SLExA ETL> - INFO - Renaming column 'Erstelltam' to 'Erstellt am' (similarity: 95%)
+2024-11-01 10:47:59,465 - <Bilstein SLExA ETL> - INFO - Schema match found for /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 40-2024 - 24.09.27.xlsx with schema source_bilstein_schema1_v1.json
+2024-11-01 10:47:59,466 - <Bilstein SLExA ETL> - INFO - file Vanilla Steel - KW 40-2024 - 24 is dumped in data folder successfully

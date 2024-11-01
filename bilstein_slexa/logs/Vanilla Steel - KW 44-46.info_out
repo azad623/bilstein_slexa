@@ -1,0 +1,17 @@
+2024-11-01 10:47:59,468 - <Bilstein SLExA ETL> - INFO - Starting processing for file: /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 44-46.2024 - 24.10.24.xlsx
+2024-11-01 10:47:59,468 - <Bilstein SLExA ETL> - INFO - << Step 1: Loading Excel from from pre-define location >>
+2024-11-01 10:47:59,468 - <Bilstein SLExA ETL> - INFO - The source file is loading from local repository
+2024-11-01 10:47:59,477 - <Bilstein SLExA ETL> - INFO - DataFrame is created successfully with the shape:(79, 19)
+2024-11-01 10:47:59,477 - <Bilstein SLExA ETL> - INFO - << Step 3: Validate dataframe layout against pre-defined source schemas >>
+
+2024-11-01 10:47:59,477 - <Bilstein SLExA ETL> - INFO - Index(['Werk', 'Lagerort', 'Material', 'Güte (Fertigung)', 'Güte-Text',
+       'HF-Dicke', 'HF-Breite', 'Charge', 'Erstellt am', 'Frei verwendbar',
+       'Basismengeneinheit', 'Mindestpreis €/mt', 'Materialkurztext',
+       'Q-Meldungsnummer', 'Beschreibung', 'Kurztext zum Code',
+       'Walzzustand (Fertigung)', 'Wiederverwertung Ausfall',
+       'Wiederverwertung Ausfall.1'],
+      dtype='object')
+2024-11-01 10:47:59,479 - <Bilstein SLExA ETL> - INFO - Renaming column 'HF-Breite' to 'HF-Breite.1' (similarity: 90%)
+2024-11-01 10:47:59,483 - <Bilstein SLExA ETL> - INFO - Schema match found for /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 44-46.2024 - 24.10.24.xlsx with schema source_bilstein_schema1_v1.json
+2024-11-01 10:47:59,484 - <Bilstein SLExA ETL> - INFO - Fixed column 'Frei verwendbar' to expected type 'int64'
+2024-11-01 10:47:59,484 - <Bilstein SLExA ETL> - INFO - file Vanilla Steel - KW 44-46 is dumped in data folder successfully

@@ -1,0 +1,17 @@
+2024-11-01 10:47:59,513 - <Bilstein SLExA ETL> - INFO - Starting processing for file: /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 41-2024 - 24.10.02.xlsx
+2024-11-01 10:47:59,513 - <Bilstein SLExA ETL> - INFO - << Step 1: Loading Excel from from pre-define location >>
+2024-11-01 10:47:59,513 - <Bilstein SLExA ETL> - INFO - The source file is loading from local repository
+2024-11-01 10:47:59,532 - <Bilstein SLExA ETL> - INFO - DataFrame is created successfully with the shape:(186, 25)
+2024-11-01 10:47:59,532 - <Bilstein SLExA ETL> - INFO - << Step 3: Validate dataframe layout against pre-defined source schemas >>
+
+2024-11-01 10:47:59,532 - <Bilstein SLExA ETL> - INFO - Index(['Werk', 'Lagerort', 'Material', 'Güte (Fertigung)', 'Güte-Text',
+       'HF-Dicke', 'HF-Breite', 'HF-Länge', 'HF-Dicke.1', 'HF-Breite.1',
+       'Charge', 'Erstellt am', 'Frei verwendbar', 'Basismengeneinheit',
+       'Vertriebsbeleg', 'Position (SD)', 'Materialart', 'Materialkurztext',
+       'Q-Meldungsnummer', 'Beschreibung', 'Kurztext zum Code',
+       'Walzzustand (Fertigung)', 'disponiert', 'Wiederverwertung Ausfall',
+       'Wiederverwertung Ausfall.1'],
+      dtype='object')
+2024-11-01 10:47:59,539 - <Bilstein SLExA ETL> - INFO - Schema match found for /Users/azadabad/Projects/bilstein_slexa/inputs/raw/Vanilla Steel - KW 41-2024 - 24.10.02.xlsx with schema source_bilstein_schema1_v1.json
+2024-11-01 10:47:59,541 - <Bilstein SLExA ETL> - INFO - file Vanilla Steel - KW 41-2024 - 24 is dumped in data folder successfully
+2024-11-01 10:47:59,541 - <Bilstein SLExA ETL> - INFO - ETL pipeline completed

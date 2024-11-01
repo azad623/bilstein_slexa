@@ -6,6 +6,7 @@ import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 from bilstein_slexa import config, schema_folder
+from bilstein_slexa.utils.helper import load_layout_schema
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
 
@@ -33,9 +34,7 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
     for schema_file in os.listdir(schema_folder):
         if schema_file.startswith("source"):
             schema_path = os.path.join(schema_folder, schema_file)
-            with open(schema_path, "r") as f:
-                schema = json.load(f)
-
+            schema = load_layout_schema(schema_path)
             required_columns = [col["name"] for col in schema.get("columns", [])]
 
             # Check if all required columns are present using fuzzy matching
