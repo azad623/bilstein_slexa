@@ -27,8 +27,8 @@ def setup_logging(file_path: str):
     # Remove the extension
     base_name = os.path.basename(file_path).split(".")[0]
 
-    info_out_path = os.path.join(log_output_path, f"{base_name}.info_out")
-    error_out_path = os.path.join(log_output_path, f"{base_name}.error_out")
+    info_out_path = os.path.join(log_output_path, f"{base_name}.info.log")
+    error_out_path = os.path.join(log_output_path, f"{base_name}.error.log")
 
     # Delete files if exist
     for path in [info_out_path, error_out_path]:
