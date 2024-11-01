@@ -105,7 +105,8 @@ target/
 .ipynb_checkpoints/
 
 # exclude /inputs and /outputs/data except top-level markdown
-/inputs/*
+*.xlsx
+*.pk
 !/inputs/*.md
 /outputs/data/*
 !/outputs/data/*.md
