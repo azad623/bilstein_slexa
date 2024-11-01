@@ -1,0 +1,121 @@
+{
+  "columns": [
+    {
+      "name": "Werk",
+      "dtype": "string",
+      "example_value": "100",
+      "translation": ""
+    },
+    {
+      "name": "Lagerort",
+      "dtype": "string",
+      "example_value": "100",
+      "translation": ""
+    },
+    {
+      "name": "Material",
+      "dtype": "string",
+      "example_value": "50000029",
+      "translation": ""
+    },
+    {
+      "name": "Güte (Fertigung)",
+      "dtype": "string",
+      "example_value": "02",
+      "translation": ""
+    },
+    {
+      "name": "Güte-Text",
+      "dtype": "string",
+      "example_value": "DC 01",
+      "translation": ""
+    },
+    {
+      "name": "HF-Dicke",
+      "dtype": "float",
+      "example_value": 1.0,
+      "translation": ""
+    },
+    {
+      "name": "HF-Breite",
+      "dtype": "float",
+      "example_value": 105.0,
+      "translation": ""
+    },
+    {
+      "name": "Charge",
+      "dtype": "string",
+      "example_value": "0001119380",
+      "translation": ""
+    },
+    {
+      "name": "Erstellt am",
+      "dtype": "date",
+      "example_value": "2024-09-04",
+      "translation": ""
+    },
+    {
+      "name": "Frei verwendbar",
+      "dtype": "boolean",
+      "example_value": "Yes",
+      "translation": ""
+    },
+    {
+      "name": "Basismengeneinheit",
+      "dtype": "string",
+      "example_value": "KG",
+      "translation": ""
+    },
+    {
+      "name": "Mindestpreis €/mt",
+      "dtype": "float",
+      "example_value": 375.0,
+      "translation": ""
+    },
+    {
+      "name": "Materialkurztext",
+      "dtype": "string",
+      "example_value": "Ausfall für 2A",
+      "translation": ""
+    },
+    {
+      "name": "Q-Meldungsnummer",
+      "dtype": "string",
+      "example_value": "30052326",
+      "translation": ""
+    },
+    {
+      "name": "Beschreibung",
+      "dtype": "string",
+      "example_value": "Alllast VK 1A Material",
+      "translation": ""
+    },
+    {
+      "name": "Kurztext zum Code",
+      "dtype": "string",
+      "example_value": "Stornierung durch Kunden",
+      "translation": ""
+    },
+    {
+      "name": "Walzzustand (Fertigung)",
+      "dtype": "string",
+      "example_value": "105",
+      "translation": ""
+    },
+    {
+      "name": "Wiederverwertung Ausfall",
+      "dtype": "string",
+      "example_value": "2A",
+      "translation": ""
+    },
+    {
+      "name": "Wiederverwertung Ausfall",
+      "dtype": "string",
+      "example_value": "SC",
+      "translation": ""
+    }
+  ],
+  "sheet_name": "Sheet1",
+  "row_count": "variable",
+  "material": ["coil"]
+}

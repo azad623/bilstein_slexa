@@ -1,0 +1,171 @@
+{
+  "columns": [
+    {
+      "name": "Bundle ID",
+      "dtype": "string",
+      "example_value": "30052326"
+    },
+    {
+      "name": "Auction Type",
+      "dtype": "string",
+      "example_value": "Blind"
+    },
+    {
+      "name": "Auction Tag",
+      "dtype": "string",
+      "example_value": "Repeat auction"
+    },
+    {
+      "name": "Product Location (UUID)",
+      "dtype": "string",
+      "example_value": "Im Weinhof 36 Hagen DE 58119"
+    },
+    {
+      "name": "Access",
+      "dtype": "string",
+      "example_value": "open"
+    },
+    {
+      "name": "Auction Comments",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Article ID (internal)",
+      "dtype": "string",
+      "example_value": "30052326"
+    },
+    {
+      "name": "Form",
+      "dtype": "string",
+      "example_value": "Slit Coils"
+    },
+    {
+      "name": "Choice",
+      "dtype": "string",
+      "example_value": "2nd"
+    },
+    {
+      "name": "Grade",
+      "dtype": "string",
+      "example_value": "DC01"
+    },
+    {
+      "name": "Finish_1",
+      "dtype": "string",
+      "example_value": "C440"
+    },
+    {
+      "name": "Finish_2",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Finish_3",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Coating",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Surface Type",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Surface Protection",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Length (mm)",
+      "dtype": "float",
+      "example_value": 105
+    },
+    {
+      "name": "Width (mm)",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Height (mm)",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Thickness (mm)",
+      "dtype": "float",
+      "example_value": 1
+    },
+    {
+      "name": "(Outer) Diameter (mm)",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Wall Thickness (mm)",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Web Thickness (mm)",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Flange Thickness (mm)",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Certificates",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Defect Description per Line Item",
+      "dtype": "string",
+      "example_value": "Cancellation by customers / Stornierung durch Kunden / Altlast VK 1 A Material"
+    },
+    {
+      "name": "Quantity",
+      "dtype": "int",
+      "example_value": 16
+    },
+    {
+      "name": "Total Weight (KGs)",
+      "dtype": "float",
+      "example_value": 8368
+    },
+    {
+      "name": "Minimum Price",
+      "dtype": "float",
+      "example_value": 375
+    },
+    {
+      "name": "Buy Now Price",
+      "dtype": "float",
+      "example_value": ""
+    },
+    {
+      "name": "Location",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Mill of Origin",
+      "dtype": "string",
+      "example_value": ""
+    },
+    {
+      "name": "Tensile Strength, Rm (MPa)",
+      "dtype": "string",
+      "example_value": ""
+    }
+  ],
+  "sheet_name": "Conversion",
+  "row_count": "variable"
+}
