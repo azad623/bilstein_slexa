@@ -4,115 +4,127 @@
       "name": "Werk",
       "dtype": "string",
       "example_value": "100",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Lagerort",
       "dtype": "string",
       "example_value": "100",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Material",
       "dtype": "string",
       "example_value": "50000029",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Güte (Fertigung)",
       "dtype": "string",
       "example_value": "02",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Güte-Text",
       "dtype": "string",
       "example_value": "DC 01",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "HF-Dicke",
       "dtype": "float",
       "example_value": 1.0,
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "HF-Breite",
       "dtype": "float",
       "example_value": 105.0,
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Charge",
       "dtype": "string",
       "example_value": "0001119380",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Erstellt am",
       "dtype": "date",
       "example_value": "2024-09-04",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Frei verwendbar",
-      "dtype": "boolean",
+      "dtype": "float",
       "example_value": "Yes",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Basismengeneinheit",
       "dtype": "string",
       "example_value": "KG",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Mindestpreis €/mt",
       "dtype": "float",
       "example_value": 375.0,
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Materialkurztext",
       "dtype": "string",
       "example_value": "Ausfall für 2A",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Q-Meldungsnummer",
       "dtype": "string",
       "example_value": "30052326",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Beschreibung",
       "dtype": "string",
       "example_value": "Alllast VK 1A Material",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     },
     {
       "name": "Kurztext zum Code",
       "dtype": "string",
       "example_value": "Stornierung durch Kunden",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Walzzustand (Fertigung)",
       "dtype": "string",
       "example_value": "105",
-      "translation": ""
+      "translation": "",
+      "mandatory": true
     },
     {
       "name": "Wiederverwertung Ausfall",
       "dtype": "string",
       "example_value": "2A",
-      "translation": ""
-    },
-    {
-      "name": "Wiederverwertung Ausfall",
-      "dtype": "string",
-      "example_value": "SC",
-      "translation": ""
+      "translation": "",
+      "mandatory": false
     }
   ],
   "sheet_name": "Sheet1",

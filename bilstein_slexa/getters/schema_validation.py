@@ -11,6 +11,10 @@ from bilstein_slexa.utils.helper import load_layout_schema
 logger = logging.getLogger("<Bilstein SLExA ETL>")
 
 
+def delete_extra_columns(df, required_columns) -> None:
+    df.drop(columns=[col for col in df if col not in required_columns], inplace=True)
+
+
 def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
     """
     Validate the DataFrame against multiple schemas in the specified folder. If no schema matches,
@@ -26,7 +30,6 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
         (bool, Optional[list]): True and material values if matched; otherwise, False and None.
     """
     unmatched_schemas = []
-    logger.info(f"{df.columns}")
 
     # Normalize DataFrame column names (remove spaces and lowercase)
     df.columns = [col for col in df.columns]
@@ -35,20 +38,29 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
         if schema_file.startswith("source"):
             schema_path = os.path.join(schema_folder, schema_file)
             schema = load_layout_schema(schema_path)
-            required_columns = [col["name"] for col in schema.get("columns", [])]
+            required_columns = [
+                col["name"]
+                for col in schema.get("columns", [])
+                if col["mandatory"] is True
+            ]
 
             # Check if all required columns are present using fuzzy matching
             matched_columns = match_and_fix_columns(df, required_columns)
 
             # Check if all required columns are present
-            if len(df.columns) == len(matched_columns):
+            if required_columns == matched_columns:
                 logger.info(
                     f"Schema match found for {file_path} with schema {schema_file}"
                 )
 
                 # Match and fix data types
                 fix_data_types(df, schema)
-                return True, schema
+
+                # Delete uncessary columns from dataframe
+                delete_extra_columns(df, required_columns)
+                logger.info(f"Extra columns drops >> {df.columns}")
+
+                return True
 
             # Collect differences for unmatched schemas
             unmatched_schemas.append(
@@ -112,10 +124,11 @@ def fix_data_types(df: pd.DataFrame, schema: dict):
     """
     for column_info in schema.get("columns", []):
         column_name = column_info["name"]
+        column_status = column_info["mandatory"]
         expected_dtype = column_info["dtype"]
 
         # Skip if column is missing or already of the correct type
-        if column_name not in df.columns:
+        if column_name not in df.columns or column_status is False:
             continue
         actual_dtype = str(df[column_name].dtype)
 

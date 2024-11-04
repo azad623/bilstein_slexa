@@ -1,6 +1,6 @@
 import os
 import yaml
-from bilstein_slexa import logger, config
+from bilstein_slexa import logger, config, local_data_input_path
 from bilstein_slexa.getters.data_getter import generate_path_list
 from bilstein_slexa.getters.data_getter import load_excel_file
 from bilstein_slexa.getters.schema_validation import validate_with_all_schemas
@@ -27,33 +27,39 @@ def pipeline_manager():
 
     if config["etl_pipeline"]["run_extraction"]:
         excel_path_list = generate_path_list()
-        for file_path in excel_path_list:
+        if excel_path_list and len(excel_path_list) > 0:
+            for file_path in excel_path_list:
 
-            file_name = os.path.basename(file_path).split(".")[0]
-            # Set up logging for each file
-            logger = setup_logging(file_path)
-            logger.info(f"Starting processing for file: {file_path}")
+                file_name = os.path.basename(file_path).split(".")[0]
+                # Set up logging for each file
+                logger = setup_logging(file_path)
+                logger.info(f"Starting processing for file: {file_path}")
 
-            # Step 1: Load file
-            logger.info("<< Step 1: Loading Excel from from pre-define location >>")
-            df = load_excel_file(file_path)
-            if df is None:
-                logger.error(
-                    f"Loader failed to load Excel file to dataframe for: {file_path}"
+                # Step 1: Load file
+                logger.info("<< Step 1: Loading Excel from from pre-define location >>")
+                df = load_excel_file(file_path)
+                if df is None:
+                    logger.error(
+                        f"Loader failed to load Excel file to dataframe for: {file_path}"
+                    )
+                    continue
+
+                # Step 2: Detec the header suing heuristic approach
+                # logger.info("<< Step 2: Detecting table's header >>")
+                # df = identify_tables(df)
+
+                # Step 3: Validate against multiple schemas with scoring
+                logger.info(
+                    "<< Step 3: Validate dataframe layout against pre-defined source schemas >>\n"
                 )
-                continue
-
-            # Step 2: Detec the header suing heuristic approach
-            # logger.info("<< Step 2: Detecting table's header >>")
-            # df = identify_tables(df)
-
-            # Step 3: Validate against multiple schemas with scoring
-            logger.info(
-                "<< Step 3: Validate dataframe layout against pre-defined source schemas >>\n"
-            )
-            is_valid, matched_schema = validate_with_all_schemas(df, file_path)
-            if is_valid:
-                save_pickle_file(df, file_name)
+                if validate_with_all_schemas(df, file_path):
+                    save_pickle_file(
+                        {"file_name": file_name, "data_frame": df}, file_name
+                    )
+                    # write funtion to delet Excel file in future
+                    # del_excel_file(file_name)
+        else:
+            print(f"Could not find any valid Excel file in {local_data_input_path}")
 
     if config["etl_pipeline"]["run_extraction"]:
         pass
@@ -73,7 +79,7 @@ def pipeline_manager():
         # )
         # save_validation_log(log_output_path)
 
-    logger.info("ETL pipeline completed")
+    print("ETL pipeline completed")
 
 
 if __name__ == "__main__":

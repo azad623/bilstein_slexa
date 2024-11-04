@@ -44,15 +44,16 @@ def generate_path_list() -> list:
     valid_file_list = []
     if config["load_local"]:
         dir_path = os.path.join(local_data_input_path, "raw")
-
-        for file_name in os.listdir(dir_path):
-            if os.path.isfile(os.path.join(dir_path, file_name)) and is_valid_format(
-                dir_path, file_name
-            ):
-                # add filename to list
-                valid_file_list.append(os.path.join(dir_path, file_name))
-
-        return valid_file_list if len(valid_file_list) > 0 else None
+        try:
+            for file_name in os.listdir(dir_path):
+                if os.path.isfile(
+                    os.path.join(dir_path, file_name)
+                ) and is_valid_format(dir_path, file_name):
+                    # add filename to list
+                    valid_file_list.append(os.path.join(dir_path, file_name))
+            return valid_file_list
+        except IndexError:
+            return None
     else:
         # reserved for loading files from Google cloud environment
         # write a function to load list of files from Google storage. In future we do not need this function
