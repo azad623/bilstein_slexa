@@ -28,7 +28,7 @@ def is_valid_format(dir_path: str, file_name: str) -> bool:
     return is_valid_extension and is_valid_mime
 
 
-def generate_path_list() -> list:
+def generate_path_list(folder_name) -> list:
     """
     Checks if the file at the specified path has a valid format based on allowed file types
     defined in the configuration file.
@@ -42,8 +42,8 @@ def generate_path_list() -> list:
         bool: True if the file is of a valid type and format, otherwise False.
     """
     valid_file_list = []
-    if config["load_local"]:
-        dir_path = os.path.join(local_data_input_path, "raw")
+    if config["etl_pipeline"]["load_local"]:
+        dir_path = os.path.join(local_data_input_path, folder_name)
         try:
             for file_name in os.listdir(dir_path):
                 if os.path.isfile(
@@ -71,7 +71,7 @@ def load_excel_file(file_path: str) -> Optional[pd.DataFrame]:
     Returns:
         Optional[pd.DataFrame]: The loaded DataFrame if the file is valid, otherwise None.
     """
-    if config["load_local"]:
+    if config["etl_pipeline"]["load_local"]:
         logger.info("The source file is loading from local repository")
         return load_from_local(file_path)
     else:

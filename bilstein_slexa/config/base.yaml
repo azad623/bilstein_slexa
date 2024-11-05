@@ -1,9 +1,9 @@
-load_local: True
-
 etl_pipeline:
+  load_local: True
+  rewrite_log: True
   run_extraction: True
   run_transformation: True
-  run_loading: True
+  run_loading: False
 
 file_types:
   valid_file_extensions:
@@ -16,7 +16,7 @@ row_string_density_threshold: 0.5
 
 dtype_map:
   {
-    "string": "object",
+    "string": "string",
     "float": "float64",
     "float64": "float64",
     "int64": "int64",

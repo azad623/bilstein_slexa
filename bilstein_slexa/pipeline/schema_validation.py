@@ -1,11 +1,11 @@
 import os
 import json
 import logging
-from typing import Optional
+from typing import Optional, List, Dict
 import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-from bilstein_slexa import config, schema_folder
+from bilstein_slexa import config, source_schema_path
 from bilstein_slexa.utils.helper import load_layout_schema
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
@@ -13,6 +13,27 @@ logger = logging.getLogger("<Bilstein SLExA ETL>")
 
 def delete_extra_columns(df, required_columns) -> None:
     df.drop(columns=[col for col in df if col not in required_columns], inplace=True)
+
+
+def get_required_columns(schema: Dict) -> List[str]:
+    """
+    Extract required column names from the schema.
+
+    Args:
+        schema (dict): The schema dictionary.
+
+    Returns:
+        List[str]: A list of required column names.
+    """
+    if not schema or "columns" not in schema:
+        raise ValueError("Invalid schema format: missing 'columns' key.")
+
+    required_columns = [
+        col["name"]
+        for col in schema.get("columns", [])
+        if col.get("mandatory", False) is True
+    ]
+    return required_columns
 
 
 def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
@@ -33,54 +54,43 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
 
     # Normalize DataFrame column names (remove spaces and lowercase)
     df.columns = [col for col in df.columns]
+    schema = load_layout_schema(source_schema_path)
+    required_columns = get_required_columns(schema)
 
-    for schema_file in os.listdir(schema_folder):
-        if schema_file.startswith("source"):
-            schema_path = os.path.join(schema_folder, schema_file)
-            schema = load_layout_schema(schema_path)
-            required_columns = [
-                col["name"]
-                for col in schema.get("columns", [])
-                if col["mandatory"] is True
-            ]
+    # Check if all required columns are present using fuzzy matching
+    matched_columns = match_and_fix_columns(df, required_columns)
 
-            # Check if all required columns are present using fuzzy matching
-            matched_columns = match_and_fix_columns(df, required_columns)
+    # Check if all required columns are present
+    if required_columns == matched_columns:
+        logger.info(
+            f"Schema match found for {file_path} with schema {source_schema_path}"
+        )
 
-            # Check if all required columns are present
-            if required_columns == matched_columns:
-                logger.info(
-                    f"Schema match found for {file_path} with schema {schema_file}"
-                )
+        # Match and fix data types
+        df = fix_data_types(df, schema)
 
-                # Match and fix data types
-                fix_data_types(df, schema)
+        # Delete uncessary columns from dataframe
+        delete_extra_columns(df, required_columns)
+        logger.info(f"Extra columns drops >> {df.columns}")
 
-                # Delete uncessary columns from dataframe
-                delete_extra_columns(df, required_columns)
-                logger.info(f"Extra columns drops >> {df.columns}")
+        return True
 
-                return True
-
-            # Collect differences for unmatched schemas
-            unmatched_schemas.append(
-                {
-                    "schema": schema_file,
-                    "reference_missing_columns": [
-                        col for col in required_columns if col not in df.columns
-                    ],
-                    "source_missing_columns": [
-                        col for col in df.columns if col not in required_columns
-                    ],
-                }
-            )
+    # Collect differences for unmatched schemas
+    unmatched_schemas.append(
+        {
+            "schema": source_schema_path,
+            "missing_columns": [
+                col for col in required_columns if col not in df.columns
+            ],
+        }
+    )
 
     # Log report for unmatched schemas if no match was found
     logger.error(f"No matching schema found for {file_path}")
     for report in unmatched_schemas:
         logger.error(f"{report}")
 
-    return False, None
+    return False
 
 
 def match_and_fix_columns(df: pd.DataFrame, required_columns: list) -> list:
@@ -114,6 +124,25 @@ def match_and_fix_columns(df: pd.DataFrame, required_columns: list) -> list:
     return matched_columns
 
 
+def clean_and_convert_to_string(df, columns):
+    """
+    Converts specified columns to strings, removing any `.0` suffix for floats.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the columns to convert.
+        columns (list): List of column names to clean and convert to strings.
+
+    Returns:
+        pd.DataFrame: DataFrame with specified columns converted to strings without `.0` suffixes.
+    """
+    for col in columns:
+        # Convert float values that represent whole numbers to integers, then to strings
+        df[col] = df[col].apply(
+            lambda x: str(int(x)) if isinstance(x, float) and x.is_integer() else str(x)
+        )
+    return df
+
+
 def fix_data_types(df: pd.DataFrame, schema: dict):
     """
     Validates and fixes data types based on the matched schema.
@@ -123,9 +152,9 @@ def fix_data_types(df: pd.DataFrame, schema: dict):
         schema (dict): The matched schema with columns and expected data types.
     """
     for column_info in schema.get("columns", []):
-        column_name = column_info["name"]
         column_status = column_info["mandatory"]
         expected_dtype = column_info["dtype"]
+        column_name = column_info["name"]
 
         # Skip if column is missing or already of the correct type
         if column_name not in df.columns or column_status is False:
@@ -143,6 +172,7 @@ def fix_data_types(df: pd.DataFrame, schema: dict):
                 logger.error(
                     f"Failed to fix column '{column_name}' to type '{expected_dtype}': {e}"
                 )
+    return df
 
 
 def is_dtype_match(expected_dtype: str, actual_dtype: str) -> bool:
@@ -157,7 +187,7 @@ def is_dtype_match(expected_dtype: str, actual_dtype: str) -> bool:
         bool: True if the data type matches, otherwise False.
     """
     dtype_map = config["dtype_map"]
-    return dtype_map.get(expected_dtype) == actual_dtype
+    return dtype_map.get(expected_dtype) in actual_dtype
 
 
 def convert_column_dtype(
@@ -175,7 +205,7 @@ def convert_column_dtype(
         pd.DataFrame: The DataFrame with the updated column.
     """
     if expected_dtype == "string":
-        df[column_name] = df[column_name].astype(str)
+        df[column_name] = df[column_name].astype(pd.StringDtype())
     elif expected_dtype == "float":
         df[column_name] = pd.to_numeric(df[column_name], errors="coerce")
     elif expected_dtype == "int":

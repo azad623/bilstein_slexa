@@ -13,7 +13,7 @@ validation_log_df = pd.DataFrame(
 )
 
 
-def setup_logging(file_path: str):
+def setup_logging(file_path: str, config: dict) -> logging.Logger:
     """
     Set up logging configuration with a dynamic file name.
 
@@ -22,7 +22,7 @@ def setup_logging(file_path: str):
     """
     # Load YAML configuration
     with open(log_config_path, "r") as file:
-        config = yaml.safe_load(file)
+        logging_cfg = yaml.safe_load(file)
 
     # Remove the extension
     base_name = os.path.basename(file_path).split(".")[0]
@@ -31,16 +31,18 @@ def setup_logging(file_path: str):
     error_out_path = os.path.join(log_output_path, f"{base_name}.error.log")
 
     # Delete files if exist
-    for path in [info_out_path, error_out_path]:
-        if os.path.exists(path):
-            os.remove(path)
+    if config["etl_pipeline"]["rewrite_log"]:
+        for path in [info_out_path, error_out_path]:
+            if os.path.exists(path):
+                os.remove(path)
 
     # Modify the filenames based on the Excel file name
-    config["handlers"]["info_file_handler"]["filename"] = info_out_path
-    config["handlers"]["error_file_handler"]["filename"] = error_out_path
+    logging_cfg["handlers"]["info_file_handler"]["filename"] = info_out_path
+    logging_cfg["handlers"]["error_file_handler"]["filename"] = error_out_path
+    logging_cfg["handlers"]["warning_file_handler"]["filename"] = info_out_path
 
     # Apply the modified logging configuration
-    logging.config.dictConfig(config)
+    logging.config.dictConfig(logging_cfg)
     logging.info(f"Logging initialized for {base_name}")
     logging.error(f"Logging initialized for {base_name}")
 
