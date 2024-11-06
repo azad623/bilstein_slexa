@@ -27,10 +27,14 @@ dtype_map:
     "datetime64[ns]": "datetime64[ns]",
   }
 
-warehoause_address:
-  {
-    "100": "Im Weinhof 36 Hagen DE 58119",
-    "139": "Oeger Straße 11-35 Hagen DE 58119",
-    "127": "Unterberchum 30 Hagen DE 58093",
-    "101": "Im Weinhof 36 Hagen DE 58119",
-  }
+template_date:
+  warehoause_address:
+    {
+      "100": "Im Weinhof 36 Hagen DE 58119",
+      "139": "Oeger Straße 11-35 Hagen DE 58119",
+      "127": "Unterberchum 30 Hagen DE 58093",
+      "101": "Im Weinhof 36 Hagen DE 58119",
+    }
+  action_type: "Blind"
+  access: "Open"
+  choice: "2nd"

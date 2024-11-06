@@ -39,3 +39,6 @@ config = get_yaml_config(_base_config_path)
 # define input and output data locations
 local_data_input_path = str(Path(__file__).resolve().parents[1] / "inputs/")
 local_data_output_path = str(Path(__file__).resolve().parents[1] / "outputs/")
+
+# finish repo path
+finish_repo_path = Path(__file__).parent.resolve() / "config/bilstein_finish_repo.yaml"

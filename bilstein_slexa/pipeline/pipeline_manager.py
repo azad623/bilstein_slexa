@@ -29,11 +29,11 @@ from bilstein_slexa.pipeline.data_validation import (
 )
 
 # from bilstein_slexa.transformation import transform_data
-from bilstein_slexa.config.logging_system import (
-    setup_logging,
-    log_validation_result,
-    save_validation_log,
-)
+from bilstein_slexa.config.logging_system import setup_logger
+
+from bilstein_slexa.utils.database import Database
+from bilstein_slexa.pipeline.grade_checker import GradeChecker
+from bilstein_slexa.pipeline.finish_checker import FinishChecker
 
 
 def pipeline_manager():
@@ -51,7 +51,7 @@ def pipeline_manager():
                 file_name = os.path.basename(file_path).split(".")[0]
 
                 # Set up logging for each file
-                logger = setup_logging(file_path, config)
+                logger = setup_logger(file_path, config)
                 logger.info(f"Starting processing for file: {file_path}")
 
                 # Step 1: Load file
@@ -85,8 +85,11 @@ def pipeline_manager():
 
     if config["etl_pipeline"]["run_transformation"]:
         # Step 4: Transform data
+
+        # Setup the necessary path
         dir_path = os.path.join(local_data_input_path, "interim")
         schema = load_layout_schema(source_schema_path)
+
         required_cols = get_required_columns(schema)
         translations = {
             col["name"]: col["translation"]
@@ -94,6 +97,7 @@ def pipeline_manager():
             if col["mandatory"]
         }
 
+        # Loop in pickle objects and read the dataframes
         for file_name in os.listdir(dir_path):
             if os.path.isfile(os.path.join(dir_path, file_name)) and file_name.endswith(
                 ".pk"
@@ -102,7 +106,7 @@ def pipeline_manager():
                 df = item["data_frame"]
 
                 # Set up logging for each file
-                logger = setup_logging(item["file_name"], config)
+                logger = setup_logger(item["file_name"], config)
 
                 # Fix data type after loading pickle file
                 df = fix_data_types(df, schema)
@@ -134,9 +138,32 @@ def pipeline_manager():
 
                 # Aggregate data grouped by 'Q-Meldungsnummer'
                 non_identical_rows_flag, aggregated_df = aggregate_data(df)
+                grades = aggregated_df["grade"].to_list()
+                print(grades)
+
+                # material_spec_flag, material_updated_df = validate_grade_finish(df)
 
                 if non_identical_rows_flag:
-                    pass
+                    # Initialize the database connection
+                    db = Database()
+
+                    try:
+                        grade_checker = GradeChecker(db)
+                        df = grade_checker.check_and_update_grade(
+                            df, grade_column="grade"
+                        )
+
+                        finish_checker = FinishChecker()
+                        df = finish_checker.check_and_update_finish(
+                            df, finish_column="finish"
+                        )
+                    except Exception as e:
+                        print(e)
+                    finally:
+                        # Close the connection when done
+                        db.close()
+                        del grade_checker
+                        del finish_checker
 
         # Step 5: Save the processed file
         # output_file = os.path.join(output_folder, f"processed_{file_name}")

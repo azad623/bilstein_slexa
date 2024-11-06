@@ -21,3 +21,5 @@ google-cloud
 google-cloud-storage
 openpyxl
 fuzzywuzzy
+psycopg2-binary
+dotenv

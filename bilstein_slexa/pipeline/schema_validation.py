@@ -65,9 +65,8 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
         logger.info(
             f"Schema match found for {file_path} with schema {source_schema_path}"
         )
-
         # Match and fix data types
-        df = fix_data_types(df, schema)
+        #  df = fix_data_types(df, schema)
 
         # Delete uncessary columns from dataframe
         delete_extra_columns(df, required_columns)
@@ -205,7 +204,7 @@ def convert_column_dtype(
         pd.DataFrame: The DataFrame with the updated column.
     """
     if expected_dtype == "string":
-        df[column_name] = df[column_name].astype(pd.StringDtype())
+        clean_and_convert_to_string(df, [column_name])
     elif expected_dtype == "float":
         df[column_name] = pd.to_numeric(df[column_name], errors="coerce")
     elif expected_dtype == "int":

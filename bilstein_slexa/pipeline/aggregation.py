@@ -5,6 +5,7 @@ logger = logging.getLogger("<Bilstein SLExA ETL>")
 
 pd.set_option("display.max_columns", None)  # Ensure all columns are displayed
 pd.set_option("display.width", 1000)
+pd.set_option("display.max_rows", None)
 
 
 def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
@@ -36,28 +37,21 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
                     f"The required column '{col}' is missing from the DataFrame."
                 )
 
-        df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
-
-        pd.set_option("display.max_columns", None)  # Ensure all columns are displayed
-        pd.set_option("display.width", 1000)
-        pd.set_option("display.max_rows", None)
-        # print(df[['bundle_id', 'location']])
-
         # Group by 'bundle_id' and aggregate required metrics
         aggregated_df = (
             df.groupby("bundle_id")
             .agg(
-                total_weight=("weight", "sum"),
-                total_quantity=("weight", "count"),
-                unique_grade=(
+                weight=("weight", "sum"),
+                quantity=("weight", "count"),
+                grade=(
                     "grade",
                     lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
-                unique_finish=(
+                finish=(
                     "finish",
                     lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
-                unique_min_price=(
+                min_price=(
                     "min_price",
                     lambda x: (
                         ", ".join(map(str, x.unique()))
@@ -65,11 +59,11 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
                         else x.iloc[0]
                     ),
                 ),
-                unique_location=(
+                location=(
                     "location",
                     lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
-                unique_thickness=(
+                thickness=(
                     "thickness(mm)",
                     lambda x: (
                         ", ".join(map(str, x.unique()))
@@ -77,7 +71,7 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
                         else x.iloc[0]
                     ),
                 ),
-                unique_width=(
+                width=(
                     "width(mm)",
                     lambda x: (
                         ", ".join(map(str, x.unique()))
@@ -85,15 +79,15 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
                         else x.iloc[0]
                     ),
                 ),
-                unique_beschreibung=(
+                beschreibung=(
                     "beschreibung",
                     lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
-                combined_description=(
+                description=(
                     "description",
                     lambda x: "\n".join(pd.Series(x.unique()).dropna()),
                 ),
-                combined_batch_numbers=(
+                batch_number=(
                     "batch_number",
                     lambda x: "\n".join(x.dropna().astype(str).unique()),
                 ),
@@ -103,23 +97,25 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
 
         # Validation: Check if values are not identical for specific columns
         validation_columns = [
-            "unique_grade",
-            "unique_min_price",
-            "unique_location",
-            "unique_finish",
-            "unique_thickness",
-            "unique_width",
-            "unique_beschreibung",
+            "grade",
+            "min_price",
+            "location",
+            "finish",
+            "thickness",
+            "width",
+            "beschreibung",
         ]
+
+        aggregated_df_rep = pd.DataFrame()
         for col in validation_columns:
-            aggregated_df[f"{col}_identical"] = aggregated_df[col].apply(
+            aggregated_df_rep[f"{col}_identical"] = aggregated_df[col].apply(
                 lambda x: len(set(x.split(", "))) == 1 if isinstance(x, str) else True
             )
 
         # Log warnings for non-identical values
         non_identical_rows_flag = True
         for col in validation_columns:
-            non_identical_rows = aggregated_df[~aggregated_df[f"{col}_identical"]]
+            non_identical_rows = aggregated_df[~aggregated_df_rep[f"{col}_identical"]]
             if not non_identical_rows.empty:
                 logger.error(
                     f"Non-identical values detected in column '{col}' for some 'bundle_id' groups."
@@ -133,7 +129,7 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
             "Data successfully aggregated with unique values and validation checks."
         )
         # df_string = aggregated_df.to_string(index=False)
-        # logger.info(f"\n{df_string}")
+        # logger.info(f"\n{aggregated_df_rep}")
 
         return non_identical_rows_flag, aggregated_df
 

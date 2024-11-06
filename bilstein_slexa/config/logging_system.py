@@ -1,90 +1,69 @@
 import logging
+import logging.config
 import yaml
-import pandas as pd
-from bilstein_slexa import log_config_path, log_output_path
-from datetime import datetime
 import os
+from datetime import datetime
 from typing import Optional
+from bilstein_slexa import log_config_path, log_output_path
 
 
-# DataFrame to store detailed validation logs with scores
-validation_log_df = pd.DataFrame(
-    columns=["timestamp", "file", "row", "column", "value", "score", "message"]
-)
+class CustomLogger(logging.Logger):
+    def __init__(self, name, log_file, config):
+        super().__init__(name)
+
+        # Load YAML configuration
+        with open(log_config_path, "r") as file:
+            logging_cfg = yaml.safe_load(file)
+
+        # Set up log file paths
+        base_name = os.path.basename(log_file).split(".")[0]
+        info_out_path = os.path.join(log_output_path, f"{base_name}.info.log")
+        error_out_path = os.path.join(log_output_path, f"{base_name}.error.log")
+
+        # Remove existing log files if rewrite is enabled
+        if config["etl_pipeline"].get("rewrite_log", False):
+            for path in [info_out_path, error_out_path]:
+                if os.path.exists(path):
+                    os.remove(path)
+
+        # Update handler paths in config
+        logging_cfg["handlers"]["info_file_handler"]["filename"] = info_out_path
+        logging_cfg["handlers"]["error_file_handler"]["filename"] = error_out_path
+        logging_cfg["handlers"]["warning_file_handler"]["filename"] = error_out_path
+
+        # Apply configuration
+        logging.config.dictConfig(logging_cfg)
+        self.info_handler = logging.FileHandler(info_out_path)
+        self.error_handler = logging.FileHandler(error_out_path)
+
+    def info(self, msg, *args, to_terminal=True, **kwargs):
+        """
+        Logs an info-level message with optional terminal output.
+
+        Args:
+            msg (str): The message to log.
+            to_terminal (bool): If True, log message is also printed to the terminal.
+        """
+        # Log to file
+        super().info(msg, *args, **kwargs)
+
+        # Log to terminal if specified
+        if to_terminal:
+            console_handler = logging.StreamHandler()
+            self.addHandler(console_handler)
+            super().info(msg, *args, **kwargs)
+            self.removeHandler(console_handler)
 
 
-def setup_logging(file_path: str, config: dict) -> logging.Logger:
+def setup_logger(file_path: str, config: dict) -> CustomLogger:
     """
-    Set up logging configuration with a dynamic file name.
+    Set up a custom logger with file and optional terminal logging.
 
     Args:
-        file_name (str): The base name of the Excel file being processed.
+        file_path (str): The base path of the file being processed.
+        config (dict): Configuration dictionary with logging settings.
+
+    Returns:
+        CustomLogger: Configured custom logger.
     """
-    # Load YAML configuration
-    with open(log_config_path, "r") as file:
-        logging_cfg = yaml.safe_load(file)
-
-    # Remove the extension
-    base_name = os.path.basename(file_path).split(".")[0]
-
-    info_out_path = os.path.join(log_output_path, f"{base_name}.info.log")
-    error_out_path = os.path.join(log_output_path, f"{base_name}.error.log")
-
-    # Delete files if exist
-    if config["etl_pipeline"]["rewrite_log"]:
-        for path in [info_out_path, error_out_path]:
-            if os.path.exists(path):
-                os.remove(path)
-
-    # Modify the filenames based on the Excel file name
-    logging_cfg["handlers"]["info_file_handler"]["filename"] = info_out_path
-    logging_cfg["handlers"]["error_file_handler"]["filename"] = error_out_path
-    logging_cfg["handlers"]["warning_file_handler"]["filename"] = info_out_path
-
-    # Apply the modified logging configuration
-    logging.config.dictConfig(logging_cfg)
-    logging.info(f"Logging initialized for {base_name}")
-    logging.error(f"Logging initialized for {base_name}")
-
-    # Sample logging
-    logger = logging.getLogger("<Bilstein SLExA ETL>")
-    return logger
-
-
-def log_validation_result(
-    file: str, row: int, column: str, value: any, score: float, message: str
-):
-    """
-    Logs the validation result with a score for the value.
-
-    Args:
-        file (str): The file being processed.
-        row (int): Row index of the value in the DataFrame.
-        column (str): Column name of the value.
-        value (any): The actual value being validated.
-        score (float): Validation score (0 to 1) for the value.
-        message (str): Log message, e.g., "Validation failed for column X".
-    """
-    timestamp = datetime.now()
-    logging.info(
-        f"VALIDATION - {file} - Row: {row}, Column: {column}, Value: {value}, Score: {score} - {message}"
-    )
-    validation_log_df.loc[len(validation_log_df)] = [
-        timestamp,
-        file,
-        row,
-        column,
-        value,
-        score,
-        message,
-    ]
-
-
-def save_validation_log(output_path: str):
-    """
-    Save the validation log DataFrame to a file.
-
-    Args:
-        output_path (str): Path to save the log as a CSV file.
-    """
-    validation_log_df.to_csv(output_path, index=False)
+    return CustomLogger("<Bilstein SLExA ETL>", file_path, config)
