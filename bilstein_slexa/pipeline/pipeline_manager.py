@@ -38,7 +38,7 @@ from bilstein_slexa.config.logging_system import setup_logger
 from bilstein_slexa.utils.database import Database
 from bilstein_slexa.pipeline.grade_checker import GradeChecker
 from bilstein_slexa.pipeline.finish_checker import FinishChecker
-from bilstein_slexa.pipeline.generate_gsheet import get_gsheet_ur
+from bilstein_slexa.pipeline.generate_gsheet import get_gsheet_url
 
 
 def pipeline_manager():
@@ -49,7 +49,7 @@ def pipeline_manager():
         config_path (str): Path to the YAML configuration file.
     """
 
-    if config["etl_pipeline"]["run_loading"]:
+    if config["etl_pipeline"]["run_extraction"]:
         excel_path_list = generate_path_list(folder_name="raw")
         if excel_path_list and len(excel_path_list) > 0:
             for file_path in excel_path_list:
@@ -90,8 +90,8 @@ def pipeline_manager():
 
         logger.info(f"Extration task is finished!\n\n")
 
+    # Run transformation phase
     if config["etl_pipeline"]["run_transformation"]:
-        # Step 4: Transform data
 
         # Setup the necessary path
         dir_path = os.path.join(local_data_input_path, "interim")
@@ -194,6 +194,8 @@ def pipeline_manager():
                     except Exception as e:
                         print(e)
                     finally:
+                        # write function to delete pickle file
+
                         # Close the connection when done
                         db.close()
                         del grade_checker
@@ -204,8 +206,8 @@ def pipeline_manager():
                     )
                     # exit()
 
-    if config["etl_pipeline"]["run_extraction"]:
-
+    # Run loading Phase
+    if config["etl_pipeline"]["run_loading"]:
         dir_path = os.path.join(local_data_input_path, "processed")
         for file_name in os.listdir(dir_path):
             if os.path.isfile(os.path.join(dir_path, file_name)) and file_name.endswith(
@@ -213,9 +215,8 @@ def pipeline_manager():
             ):
                 item = load_pickle_file(os.path.join(dir_path, file_name))
                 df = item["data_frame"]
-                print(df.columns)
-                url = get_gsheet_ur(df, folder_id="1ZmDDaCkE2ZyWOYvksTeveim2-vWoR1b8")
-                print(url)
+                url = get_gsheet_url(df, folder_id=config["google_folder_id"])
+                logger.info(f"G-sheet URL :{url}")
 
     print("ETL pipeline completed")
 
