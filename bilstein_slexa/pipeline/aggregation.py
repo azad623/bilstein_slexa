@@ -81,11 +81,15 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
                 ),
                 beschreibung=(
                     "beschreibung",
-                    lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
+                    lambda x: (
+                        ", ".join(x.unique())
+                        if x.replace(" ", "").nunique() > 1
+                        else x.iloc[0]
+                    ),
                 ),
                 description=(
                     "description",
-                    lambda x: "\n".join(pd.Series(x.unique()).dropna()),
+                    lambda x: "| ".join(pd.Series(x.unique()).dropna()),
                 ),
                 batch_number=(
                     "batch_number",
@@ -103,7 +107,6 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
             "finish",
             "thickness",
             "width",
-            "beschreibung",
         ]
 
         aggregated_df_rep = pd.DataFrame()
@@ -117,9 +120,6 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
         for col in validation_columns:
             non_identical_rows = aggregated_df[~aggregated_df_rep[f"{col}_identical"]]
             if not non_identical_rows.empty:
-                logger.error(
-                    f"Non-identical values detected in column '{col}' for some 'bundle_id' groups."
-                )
                 logger.error(
                     f"Details of non-identical rows:\n{non_identical_rows[['bundle_id', col]]}"
                 )

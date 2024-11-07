@@ -3,7 +3,7 @@ etl_pipeline:
   rewrite_log: True
   run_extraction: True
   run_transformation: True
-  run_loading: False
+  run_loading: True
 
 file_types:
   valid_file_extensions:
@@ -27,8 +27,8 @@ dtype_map:
     "datetime64[ns]": "datetime64[ns]",
   }
 
-template_date:
-  warehoause_address:
+template_data:
+  warehause_address:
     {
       "100": "Im Weinhof 36 Hagen DE 58119",
       "139": "Oeger Straße 11-35 Hagen DE 58119",

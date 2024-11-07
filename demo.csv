@@ -1,0 +1,222 @@
+,bundle_id,weight,quantity,grade,finish_1,min_price,location,thickness,width,description,finish_2,form,article_id,choice,access,auction_type
+0,30050750,9082,1,DC04,Cold Drawn / Soft (+LC),445.0,Oeger Straße 11-35 Hagen DE 58119,1.755,612.0,"Kaltband metallografische Daten | Cold strip metallographic data | Grobkorn
+ -1116325",,Coils,30050750,2nd,Open,Blind
+1,30050751,9082,1,DC04,Cold Drawn / Soft (+LC),445.0,Oeger Straße 11-35 Hagen DE 58119,1.755,612.0,"Kaltband metallografische Daten | Cold strip metallographic data | Grobkorn
+ -1116326",,Coils,30050751,2nd,Open,Blind
+2,30050752,9961,1,DC04,Cold Drawn / Soft (+LC),445.0,Oeger Straße 11-35 Hagen DE 58119,1.755,612.0,"Kaltband metallografische Daten | Cold strip metallographic data | Grobkorn
+ -1116324",,Coils,30050752,2nd,Open,Blind
+3,30050823,5462,1,HC500LA,NGW,385.0,Oeger Straße 11-35 Hagen DE 58119,0.4,1000.0,"Längsrisse | Longitudinal cracks | QM 10005292
+ -1116373",,Coils,30050823,2nd,Open,Blind
+4,30050824,3816,1,HC500LA,NGW,385.0,Im Weinhof 36 Hagen DE 58119,0.4,680.0,"Längsrisse | Longitudinal cracks | QM 10005293
+ -1116374",,Coils,30050824,2nd,Open,Blind
+5,30050982,11590,1,DC01,C590-K,385.0,Im Weinhof 36 Hagen DE 58119,0.4,650.0,"Emulsionsflecken | Emulsion stains | nan
+ -1116571",,Coils,30050982,2nd,Open,Blind
+6,30051052,5762,1,HC500LA,NGW,385.0,Oeger Straße 11-35 Hagen DE 58119,0.4,1052.0,"Kaltband mechanische Daten | Cold strip mechanical data | nan
+ -1116658",,Coils,30051052,2nd,Open,Blind
+7,30051081,12674,2,51CrV4,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,1.9,373.9,"Haspelrutscher | Reel slippers | nan
+ -1116760
+1116761",,Slit Coils,30051081,2nd,Open,Blind
+8,30051096,2989,1,16MnCr5,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,3.93,186.0,"zu dünn | Too thin | nan
+ -1116781",,Slit Coils,30051096,2nd,Open,Blind
+9,30051318,8504,4,C15E,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,2.1,228.0,"Dickenparallelität | Thickness | im Bund mit guten Ringen
+ -1117108
+1117109
+1117110
+1117111",,Slit Coils,30051318,2nd,Open,Blind
+10,30051332,2020,2,C60S,Cold Rolled (+CR),385.0,Im Weinhof 36 Hagen DE 58119,0.805,111.0,"zu dünn | Too thin | nan
+ -1117142
+1117143",,Slit Coils,30051332,2nd,Open,Blind
+11,30051335,2996,1,ZE630,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,1.5,350.0,"Schabstreifen | Scrapers | nan
+ -1117145",,Slit Coils,30051335,2nd,Open,Blind
+12,30051338,1039,1,DC04,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,0.9825,274.0,"falscher I-D, A-D, Stabzahl | false I-D, A-D, bar number | nan
+ -1117147",,Slit Coils,30051338,2nd,Open,Blind
+13,30051342,966,1,ZE700,Soft Annealed (+A),385.0,Im Weinhof 36 Hagen DE 58119,2.675,108.0,"Reststreifen | Residual strips | 1A Material
+ -1117136",,Slit Coils,30051342,2nd,Open,Blind
+14,30051343,1164,1,,,385.0,Im Weinhof 36 Hagen DE 58119,0.733,137.0,"Reststreifen | Residual strips | 1A Material
+ -1117137",,Slit Coils,30051343,2nd,Open,Blind
+15,30051357,2016,2,DC01,C490,385.0,Im Weinhof 36 Hagen DE 58119,2.0,107.0,"Reststreifen | Residual strips | Reststreifen.
+ -1117190
+1117191",,Slit Coils,30051357,2nd,Open,Blind
+16,30051371,1275,1,HC260LA,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,2.2,105.0,"WBD: Schalen/Schalenstreifen | WBD: shells/shell strips | nan
+ -1117262",,Slit Coils,30051371,2nd,Open,Blind
+17,30051374,10338,3,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.7825,209.0,"Dickenparallelität | Thickness | nan
+ -1117263
+1117264
+1117265",,Slit Coils,30051374,2nd,Open,Blind
+18,30051384,9150,1,51CrV4,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,1.62,572.0,"zu lose gewickelt | Wrapped to loose | nan
+ -1117305",,Slit Coils,30051384,2nd,Open,Blind
+19,30051403,3519,1,ZE1100,K,385.0,Im Weinhof 36 Hagen DE 58119,0.8,219.0,"Randwelligkeit | Marginal waviness | nan
+ -1117310",,Slit Coils,30051403,2nd,Open,Blind
+20,30051414,3736,2,DC04,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,0.9,208.0,"Emulsionsflecken | Emulsion stains | nan
+ -1117345
+1117346",,Slit Coils,30051414,2nd,Open,Blind
+21,30051441,3274,2,DC04,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,1.3325,185.0,"Punktrost | Point rust | nan
+ -1117423
+1117424",,Slit Coils,30051441,2nd,Open,Blind
+22,30051445,900,1,DC04,Soft Annealed (+A),385.0,Im Weinhof 36 Hagen DE 58119,3.9,317.0,"Haspelrutscher | Reel slippers | nan
+ -1117486",,Slit Coils,30051445,2nd,Open,Blind
+23,30051449,11178,2,DC04,C390,425.0,Im Weinhof 36 Hagen DE 58119,2.0,339.5,"Dickenparallelität | Thickness | nan
+ -1117490
+1117491",,Slit Coils,30051449,2nd,Open,Blind
+24,30051455,5098,1,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.58,292.0,"Dickenparallelität | Thickness | nan
+ -1117499",,Slit Coils,30051455,2nd,Open,Blind
+25,30051456,3574,1,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.98,226.5,"Dickenparallelität | Thickness | nan
+ -1117500",,Slit Coils,30051456,2nd,Open,Blind
+26,30051458,1311,3,DC04,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,0.85,114.0,"Kleber | Glue | nan
+ -1117501
+1117502
+1117503",,Slit Coils,30051458,2nd,Open,Blind
+27,30051477,3880,2,DC04,C390,385.0,Im Weinhof 36 Hagen DE 58119,1.8,214.0,"Emulsionsflecken | Emulsion stains | nan
+ -1117519
+1117520",,Slit Coils,30051477,2nd,Open,Blind
+28,30051482,8138,4,HC300LA,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,5.0,225.0,"Walzenrutschstelle | Roller slipping point | nan
+ -1117515
+1117516
+1117517
+1117518",,Slit Coils,30051482,2nd,Open,Blind
+29,30051501,7016,4,ZE530,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,1.0,190.0,"Schalenabdrücke | Shellprints | Werk 2
+ -1117616
+1117617
+1117618
+1117619",,Slit Coils,30051501,2nd,Open,Blind
+30,30051506,4467,1,ZE800,K,385.0,Im Weinhof 36 Hagen DE 58119,0.78,278.0,"Emulsionsflecken | Emulsion stains | nan
+ -1117539",,Slit Coils,30051506,2nd,Open,Blind
+31,30051519,3590,1,ZE1100,K,385.0,Im Weinhof 36 Hagen DE 58119,1.705,204.0,"Vercrackungsrückstände | Cracking residues | nan
+ -1117569",,Slit Coils,30051519,2nd,Open,Blind
+32,30051520,3540,1,ZE1100,K,385.0,Im Weinhof 36 Hagen DE 58119,1.705,204.0,"zu dünn | Too thin | nan
+ -1117570",,Slit Coils,30051520,2nd,Open,Blind
+33,30051523,3265,1,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.7825,209.0,"Dickenparallelität | Thickness | nan
+ -1117598",,Slit Coils,30051523,2nd,Open,Blind
+34,30051537,3162,3,C22E,CR-K,385.0,Im Weinhof 36 Hagen DE 58119,2.27,192.0,"Schalenabdrücke | Shellprints | Werk 2
+ -1117620
+1117621
+1117622",,Slit Coils,30051537,2nd,Open,Blind
+35,30051538,1990,1,DC01,NGW,410.0,Im Weinhof 36 Hagen DE 58119,5.535,245.0,"Walzenabdrücke / Eisenabdrücke | Rollprints / Ironprints | Werk 2
+ -1117623",,Slit Coils,30051538,2nd,Open,Blind
+36,30051543,1941,1,ZStE340,NGW,400.0,Im Weinhof 36 Hagen DE 58119,1.0,643.0,"Walzenabdrücke / Eisenabdrücke | Rollprints / Ironprints | nan
+ -1117599",,Coils,30051543,2nd,Open,Blind
+37,30051556,3792,4,DC01,C490-K,425.0,Im Weinhof 36 Hagen DE 58119,0.98,106.0,"Stornierung durch Kunden | Cancellation by customers | nan
+ -1117585
+1117586
+1117587
+1117588",,Slit Coils,30051556,2nd,Open,Blind
+38,30051574,3738,1,ZE600,Soft Annealed (+A),385.0,Im Weinhof 36 Hagen DE 58119,2.0,218.0,"Besäumschrottverlauf | Faulting process | nan
+ -1117604",,Slit Coils,30051574,2nd,Open,Blind
+39,30051582,2500,1,DC04,Soft Annealed (+A),425.0,Im Weinhof 36 Hagen DE 58119,4.2,145.5,"Kanten mechanische Beschädigung | Edges mechanical damage | im Bund mit Sp.Nr.87065
+ -1117628",,Slit Coils,30051582,2nd,Open,Blind
+40,30051585,1509,1,DC01,C490,385.0,Im Weinhof 36 Hagen DE 58119,2.0,243.0,"WBD: Löcher | WBD: Holes | nan
+ -1117629",,Slit Coils,30051585,2nd,Open,Blind
+41,30051590,2740,1,ZE800,Soft Annealed (+A),385.0,Im Weinhof 36 Hagen DE 58119,1.93,460.0,"Handlingsfehler /K.B. - Beschädigung | Handling errors /K.B. - Damage | nan
+ -1117630",,Slit Coils,30051590,2nd,Open,Blind
+42,30051595,8280,3,C22E,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,2.0,327.0,"Stornierung durch Kunden | Cancellation by customers | Werk 2
+ -1117625
+1117626
+1117627",,Slit Coils,30051595,2nd,Open,Blind
+43,30051608,3178,1,ZE600,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,2.0,351.0,"Dickenparallelität | Thickness | nan
+ -1117633",,Slit Coils,30051608,2nd,Open,Blind
+44,30051609,5861,1,ZE600,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,1.8,351.0,"Dickenparallelität | Thickness | nan
+ -1117634",,Slit Coils,30051609,2nd,Open,Blind
+45,30051617,11320,2,C55E,Cold Rolled (+CR),430.0,Im Weinhof 36 Hagen DE 58119,1.55,318.0,"Vercrackungsrückstände | Cracking residues | nan
+ -1117635
+1117636",,Slit Coils,30051617,2nd,Open,Blind
+46,30051623,5722,1,C55E,Cold Rolled (+CR),430.0,Im Weinhof 36 Hagen DE 58119,1.55,318.0,"Vercrackungsrückstände | Cracking residues | nan
+ -1117659",,Slit Coils,30051623,2nd,Open,Blind
+47,30051640,2668,2,HC500LA,NGW,385.0,Im Weinhof 36 Hagen DE 58119,0.425,185.0,"Reststreifen | Residual strips | Reststreifen.
+ -1117685
+1117686",,Slit Coils,30051640,2nd,Open,Blind
+48,30051644,2840,1,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.98,209.0,"WBD: Dickenparallelität / -profil | WBD: Thickness/profile | nan
+ -1117689",,Slit Coils,30051644,2nd,Open,Blind
+49,30051647,3735,3,DC04,Cold Drawn / Soft (+LC),410.0,Im Weinhof 36 Hagen DE 58119,1.3975,294.7,"Kleber | Glue | nan
+ -1117691
+1117692
+1117693",,Slit Coils,30051647,2nd,Open,Blind
+50,30051648,6812,2,ZE1100,K,385.0,Im Weinhof 36 Hagen DE 58119,1.905,204.0,"zu dünn | Too thin | nan
+ -1117697
+1117698",,Slit Coils,30051648,2nd,Open,Blind
+51,30051649,1263,1,ZE1100,K,385.0,Im Weinhof 36 Hagen DE 58119,1.705,204.0,"Vercrackungsrückstände | Cracking residues | nan
+ -1117699",,Slit Coils,30051649,2nd,Open,Blind
+52,30051655,699,1,C75S,NGW,440.0,Im Weinhof 36 Hagen DE 58119,1.575,196.1,"falscher I-D, A-D, Stabzahl | false I-D, A-D, bar number | nan
+ -1117694",,Slit Coils,30051655,2nd,Open,Blind
+53,30051656,908,1,DC04,Cold Drawn / Soft (+LC),410.0,Im Weinhof 36 Hagen DE 58119,1.3325,185.0,"Längsrisse | Longitudinal cracks | nan
+ -1117695",,Slit Coils,30051656,2nd,Open,Blind
+54,30051657,2376,1,HC260LA,Cold Drawn / Soft (+LC),395.0,Im Weinhof 36 Hagen DE 58119,2.0,135.0,"Kleber | Glue | nan
+ -1117696",,Slit Coils,30051657,2nd,Open,Blind
+55,30051673,3596,1,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.98,209.0,"Dickenparallelität | Thickness | nan
+ -1117721",,Slit Coils,30051673,2nd,Open,Blind
+56,30051676,5790,1,DC04,C390,425.0,Im Weinhof 36 Hagen DE 58119,2.0,339.5,"Dickenparallelität | Thickness | nan
+ -1117720",,Slit Coils,30051676,2nd,Open,Blind
+57,30051678,13456,13,ZE600,Soft Annealed (+A),410.0,Im Weinhof 36 Hagen DE 58119,2.0,116.0,"Stornierung durch Kunden | Cancellation by customers | vom VK 2A / 1A Material
+ -1117722
+1117723
+1117724
+1117725
+1117726
+1117727
+1117728
+1117729
+1117730
+1117731
+1117732
+1117733
+1117734",,Slit Coils,30051678,2nd,Open,Blind
+58,30051699,5358,1,DC01,,425.0,Im Weinhof 36 Hagen DE 58119,2.77,317.0,"Punktrost | Point rust | QM 10005341
+ -1117778",,Slit Coils,30051699,2nd,Open,Blind
+59,30051705,3320,1,ZE1100,K,385.0,Im Weinhof 36 Hagen DE 58119,1.905,204.0,"Dickenparallelität | Thickness | nan
+ -1117787",,Slit Coils,30051705,2nd,Open,Blind
+60,30051706,3730,1,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.98,209.0,"Dickenparallelität | Thickness | nan
+ -1117788",,Slit Coils,30051706,2nd,Open,Blind
+61,30051717,4460,1,DC04,Cold Drawn / Soft (+LC),410.0,Im Weinhof 36 Hagen DE 58119,1.1525,242.0,"Kleber | Glue | nan
+ -1117801",,Slit Coils,30051717,2nd,Open,Blind
+62,30051723,5040,1,St50-2,K,430.0,Im Weinhof 36 Hagen DE 58119,2.0,1260.0,"falscher I-D, A-D, Stabzahl | false I-D, A-D, bar number | Ist ID-600mm.
+ -1117803",,Coils,30051723,2nd,Open,Blind
+63,30051736,4720,4,C10E,Cold Drawn / Soft (+LC),415.0,Im Weinhof 36 Hagen DE 58119,4.5,140.0,"Walzenabdrücke / Eisenabdrücke | Rollprints / Ironprints | nan
+ -1117804
+1117805
+1117806
+1117807",,Slit Coils,30051736,2nd,Open,Blind
+64,30051755,1546,2,C67S,Cold Drawn / Soft (+LC),400.0,Im Weinhof 36 Hagen DE 58119,0.49,92.0,"Pickel / Quiele | Pimples / quiele | nan
+ -1117810
+1117811",,Slit Coils,30051755,2nd,Open,Blind
+65,30051756,6795,2,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.7825,209.0,"Dickenparallelität | Thickness | nan
+ -1117812
+1117813",,Slit Coils,30051756,2nd,Open,Blind
+66,30051757,3009,3,DC01,C590-K,430.0,Im Weinhof 36 Hagen DE 58119,0.385,112.0,"Pickel / Quiele | Pimples / quiele | Material ist verzinkt
+ -1118330
+1118331
+1118332",,Slit Coils,30051757,2nd,Open,Blind
+67,30051758,1740,3,DC01,C590-K,430.0,Im Weinhof 36 Hagen DE 58119,0.385,112.0,"Pickel / Quiele | Pimples / quiele | Material ist verzinkt
+ -1118333
+1118334
+1118335",,Slit Coils,30051758,2nd,Open,Blind
+68,30051762,10488,8,42CrMo4,Cold Rolled (+CR),595.0,Im Weinhof 36 Hagen DE 58119,4.572,508.0,"Stornierung durch Kunden | Cancellation by customers | 1A Material Achtung Stäbe Länge 2248mm
+ -1118310
+1118311
+1118312
+1118313
+1118314
+1118315
+1118316
+1118317",,Slit Coils,30051762,2nd,Open,Blind
+69,30051763,3102,2,C22E,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,4.5,165.0,"Stornierung durch Kunden | Cancellation by customers | 1A Material
+ -1118318
+1118319",,Slit Coils,30051763,2nd,Open,Blind
+70,30051782,7364,2,ZE600,K,385.0,Im Weinhof 36 Hagen DE 58119,1.98,226.5,"Dickenparallelität | Thickness | nan
+ -1118338
+1118339",,Slit Coils,30051782,2nd,Open,Blind
+71,30051788,4340,1,ZE600,K 50,410.0,Im Weinhof 36 Hagen DE 58119,0.78,362.0,"Stornierung durch Kunden | Cancellation by customers | 1A Material
+ -1118322",,Slit Coils,30051788,2nd,Open,Blind
+72,30051789,1844,1,ZE600,Cold Drawn / Soft (+LC),410.0,Im Weinhof 36 Hagen DE 58119,1.8,191.0,"Stornierung durch Kunden | Cancellation by customers | 1A Material
+ -1118324",,Slit Coils,30051789,2nd,Open,Blind
+73,30051790,1808,1,ZE600,Cold Drawn / Soft (+LC),410.0,Im Weinhof 36 Hagen DE 58119,1.9,191.0,"Stornierung durch Kunden | Cancellation by customers | 1A Material
+ -1118326",,Slit Coils,30051790,2nd,Open,Blind
+74,30051791,1724,1,ZE600,Cold Drawn / Soft (+LC),385.0,Im Weinhof 36 Hagen DE 58119,2.0,191.0,"Stornierung durch Kunden | Cancellation by customers | 1A Material
+ -1118328",,Slit Coils,30051791,2nd,Open,Blind
+75,30051799,2340,3,C35E,Cold Drawn / Soft (+LC),385.0,Oeger Straße 11-35 Hagen DE 58119,1.6,138.0,"Messerabdruck | Knife print | nan
+ -1118361
+1118362
+1118363",,Slit Coils,30051799,2nd,Open,Blind
+76,30051801,3621,1,ZE1100,K,385.0,Oeger Straße 11-35 Hagen DE 58119,1.705,204.0,"Vercrackungsrückstände | Cracking residues | nan
+ -1118360",,Slit Coils,30051801,2nd,Open,Blind
+77,30051802,7430,2,ZE600,K,385.0,Oeger Straße 11-35 Hagen DE 58119,1.98,209.0,"Dickenparallelität | Thickness | im Bund mit einem guten Ring
+ -1118364
+1118365",,Slit Coils,30051802,2nd,Open,Blind

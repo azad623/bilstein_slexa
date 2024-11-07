@@ -23,3 +23,11 @@ openpyxl
 fuzzywuzzy
 psycopg2-binary
 dotenv
+sentencepiece
+transformers
+huggingface
+torch torchvision
+gspread
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client

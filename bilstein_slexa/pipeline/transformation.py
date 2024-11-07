@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 import numpy as np
+from bilstein_slexa import tokenizer, model
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
 
@@ -134,3 +135,78 @@ def ensure_floating_point(df):
     except Exception as e:
         logging.error(f"Unexpected error during float conversion: {e}")
         raise
+
+
+def translate_and_merge_description(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Processes a DataFrame to add a translated 'description' column,
+    append 'Beschreibung' and 'batch_number' to it, and handle exceptions.
+
+    Steps:
+    1. Translates the 'description' column and stores it in 'translated_description'.
+    2. Appends translated text to 'description' column with a separator '|'.
+    3. Merges 'Beschreibung' and 'batch_number' with the updated 'description' column.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame with columns 'description', 'Beschreibung', and 'batch_number'.
+
+    Returns:
+        pd.DataFrame: The processed DataFrame with an updated 'description' column.
+    """
+    try:
+        # Step 1: Translate the 'description' column
+        df["translated_description"] = df["description"].apply(
+            lambda x: translate_text(x, tokenizer, model)
+        )
+
+        # Step 2: Append translated text to 'description' column with '|'
+        df["description"] = df.apply(
+            lambda row: f"{row['description']} | {row['translated_description']}",
+            axis=1,
+        )
+
+        # Step 3: Merge 'Beschreibung' and 'batch_number' with updated 'description' column
+        df["description"] = df.apply(
+            lambda row: f"{row['description']} | {row['beschreibung']}\n -{row['batch_number']}",
+            axis=1,
+        )
+
+        # Drop the intermediate 'translated_description' column if not needed
+        df.drop(
+            columns=["translated_description", "beschreibung", "batch_number"],
+            inplace=True,
+        )
+
+        logging.info("DataFrame 'description' column processed successfully.")
+
+        return df
+
+    except Exception as e:
+        logging.error(f"Error processing DataFrame: {e}")
+        return df  # Return DataFrame even if processing fails
+    return df
+
+
+def translate_text(text, tokenizer, model):
+    """
+    Translates the given text using the specified tokenizer and model.
+
+    Args:
+        text (str): The text to translate.
+        tokenizer (MarianTokenizer): The tokenizer for the translation model.
+        model (MarianMTModel): The translation model.
+
+    Returns:
+        str: The translated text.
+
+    Raises:
+        Exception: If translation fails, logs the error and returns the original text.
+    """
+    try:
+        tokens = tokenizer([text], return_tensors="pt", padding=True)
+        translated = model.generate(**tokens)
+        translated_text = tokenizer.batch_decode(translated, skip_special_tokens=True)
+        return translated_text[0]
+    except Exception as e:
+        logging.error(f"Translation error for text '{text}': {e}")
+        return text  # Return original text if translation fails

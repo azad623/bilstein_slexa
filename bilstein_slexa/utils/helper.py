@@ -8,7 +8,7 @@ from bilstein_slexa import local_data_input_path
 logger = logging.getLogger("<Bilstein SLExA ETL>")
 
 
-def save_pickle_file(df: pd.DataFrame, file_name: str) -> None:
+def save_pickle_file(df: pd.DataFrame, file_name: str, folder="interim") -> None:
     """Save dataframe to pickle format
 
     Args:
@@ -17,7 +17,7 @@ def save_pickle_file(df: pd.DataFrame, file_name: str) -> None:
     """
     try:
         with open(
-            os.path.join(local_data_input_path, f"interim/{file_name}.pk"), "wb"
+            os.path.join(local_data_input_path, f"{folder}/{file_name}.pk"), "wb"
         ) as writer:
             pickle.dump(df, writer, protocol=pickle.HIGHEST_PROTOCOL)
         logger.info(f"file {file_name} is dumped in data folder successfully")

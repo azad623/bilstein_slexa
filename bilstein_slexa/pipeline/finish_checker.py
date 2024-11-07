@@ -2,6 +2,7 @@ import pandas as pd
 import yaml
 import logging
 from bilstein_slexa import finish_repo_path
+import numpy as np
 
 # Configure logging
 logger = logging.getLogger("<Bilstein SLExA ETL>")
@@ -37,38 +38,24 @@ class FinishChecker:
         finish_dict = {str(item["finish_id"]): item for item in self.finishes}
 
         # Initialize finish2 column
-        df["finish2"] = None
+        df["finish_2"] = np.nan
 
         for idx, finish_id in df[finish_column].items():
             if finish_id in finish_dict:
                 finish_data = finish_dict[finish_id]
                 df.at[idx, finish_column] = finish_data[
-                    "finish1"
+                    "finish_1"
                 ]  # Update finish column with finish1
-                df.at[idx, "finish2"] = finish_data.get(
-                    "finish2"
+                df.at[idx, "finish_2"] = finish_data.get(
+                    "finish_2"
                 )  # Update finish2 if it exists
                 logging.info(
-                    f"Finish ID '{finish_id}' matched. Updated to '{finish_data['finish1']}'"
+                    f"Finish ID '{finish_id}' matched. Updated to '{finish_data['finish_1']}'"
                 )
             else:
+                df.at[idx, "finish_2"] = np.nan
                 logging.warning(
-                    f"Finish ID '{finish_id}'in row {idx+2} not found in the YAML data. No changes applied."
+                    f"Finish ID '{finish_id}' not found in bundle ID {df['bundle_id'].loc[idx]} in the YAML data. Updated to 'NaN'"
                 )
-
+        df.rename(columns={finish_column: "finish_1"}, inplace=True)
         return df
-
-
-# Example usage
-if __name__ == "__main__":
-    # Initialize FinishChecker with the path to the YAML file
-    yaml_path = "path/to/your/finish_data.yaml"
-    finish_checker = FinishChecker(yaml_path)
-
-    # Sample DataFrame
-    data = {"finish": [7, 10, 23, 999]}  # 999 represents a non-existing finish_id
-    df = pd.DataFrame(data)
-
-    # Run finish check and update
-    updated_df = finish_checker.check_and_update_finish(df)
-    print(updated_df)
