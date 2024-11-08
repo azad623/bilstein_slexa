@@ -1,0 +1,124 @@
+- finish_id: 7
+  code: "AC + LV"
+  finish_1: "Annealed to achieve spheroidization of the carbides (+AC)"
+  finish_2: "(+LV)"
+- finish_id: 10
+  code: "G"
+  finish_1: "G"
+  finish_2: null
+- finish_id: 11
+  code: "AC"
+  finish_1: "Annealed to achieve spheroidization of the carbides (+AC)"
+  finish_2: null
+- finish_id: 20
+  code: "(+LG)"
+  finish_1: "(+LG)"
+  finish_2: null
+- finish_id: 23
+  code: "NGW"
+  finish_1: "NGW"
+  finish_2: null
+- finish_id: 30
+  code: "K 32"
+  finish_1: "K 32"
+  finish_2: null
+- finish_id: 40
+  code: "K 40"
+  finish_1: "K 40"
+  finish_2: null
+- finish_id: 50
+  code: "K 50"
+  finish_1: "K 50"
+  finish_2: null
+- finish_id: 60
+  code: "K 60"
+  finish_1: "K 60"
+  finish_2: null
+- finish_id: 70
+  code: "K 70"
+  finish_1: "K 70"
+  finish_2: null
+- finish_id: 80
+  code: "K"
+  finish_1: "K"
+  finish_2: null
+- finish_id: 100
+  code: "Soft Annealed (+A)"
+  finish_1: "Soft Annealed (+A)"
+  finish_2: null
+- finish_id: 101
+  code: "Cold Drawn / Soft (+LC)"
+  finish_1: "Cold Drawn / Soft (+LC)"
+  finish_2: null
+- finish_id: 102
+  code: "C290"
+  finish_1: "C290"
+  finish_2: null
+- finish_id: 103
+  code: "C340"
+  finish_1: "C340"
+  finish_2: null
+- finish_id: 104
+  code: "C390"
+  finish_1: "C390"
+  finish_2: null
+- finish_id: 105
+  code: "C440"
+  finish_1: "C440"
+  finish_2: null
+- finish_id: 106
+  code: "C490"
+  finish_1: "C490"
+  finish_2: null
+- finish_id: 107
+  code: "C590"
+  finish_1: "C590"
+  finish_2: null
+- finish_id: 108
+  code: "C690"
+  finish_1: "C690"
+  finish_2: null
+- finish_id: 112
+  code: "C290-K"
+  finish_1: "C290"
+  finish_2: "K"
+- finish_id: 113
+  code: "C290-K"
+  finish_1: "C290"
+  finish_2: "K"
+- finish_id: 114
+  code: "C340-K"
+  finish_1: "C340"
+  finish_2: "K"
+- finish_id: 115
+  code: "C390-K"
+  finish_1: "C390"
+  finish_2: "K"
+- finish_id: 116
+  code: "C440-K"
+  finish_1: "C440-K"
+  finish_2: null
+- finish_id: 117
+  code: "C490-K"
+  finish_1: "C490-K"
+  finish_2: null
+- finish_id: 118
+  code: "C590-K"
+  finish_1: "C590-K"
+  finish_2: null
+- finish_id: 119
+  code: "C690-K"
+  finish_1: "C690"
+  finish_2: "K"
+- finish_id: 120
+  code: "Cold Rolled (+CR)"
+  finish_1: "Cold Rolled (+CR)"
+  finish_2: null
+- finish_id: 121
+  code: "CR-K"
+  finish_1: "CR-K"
+  finish_2: null
+- finish_id: 180
+  code: "C"
+  finish_1: "C"
+  finish_2: null

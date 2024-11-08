@@ -1,0 +1,5 @@
+# Change these at your peril:
+export PROJECT_NAME=bilstein_slexa
+export REPO_NAME=bilstein_slexa
+export DESCRIPTION=A short description of the project.
+export PROJECT_OPENNESS=private
