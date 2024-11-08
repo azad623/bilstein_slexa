@@ -1,5 +1,6 @@
 import os
 import yaml
+import streamlit as st
 from bilstein_slexa import logger, config, local_data_input_path, source_schema_path
 from bilstein_slexa.getters.data_getter import generate_path_list
 from bilstein_slexa.getters.data_getter import load_excel_file
@@ -39,9 +40,10 @@ from bilstein_slexa.utils.database import Database
 from bilstein_slexa.pipeline.grade_checker import GradeChecker
 from bilstein_slexa.pipeline.finish_checker import FinishChecker
 from bilstein_slexa.pipeline.generate_gsheet import get_gsheet_url
+from bilstein_slexa.utils.helper import delete_file
 
 
-def pipeline_manager():
+def pipeline_run():
     """
     Orchestrates the ETL pipeline, managing each step sequentially.
 
@@ -50,7 +52,7 @@ def pipeline_manager():
     """
 
     if config["etl_pipeline"]["run_extraction"]:
-        excel_path_list = generate_path_list(folder_name="raw")
+        excel_path_list = generate_path_list(folder_name="tmp")
         if excel_path_list and len(excel_path_list) > 0:
             for file_path in excel_path_list:
                 file_name = os.path.basename(file_path).split(".")[0]
@@ -84,7 +86,7 @@ def pipeline_manager():
                     )
                     # write funtion to delete
                     #  Excel file in future
-                    # del_excel_file(file_name)
+                delete_file(file_path)
         else:
             print(f"Could not find any valid Excel file in {local_data_input_path}")
 
@@ -200,11 +202,11 @@ def pipeline_manager():
                         db.close()
                         del grade_checker
                         del finish_checker
+                        delete_file(os.path.join(dir_path, file_name))
                 else:
                     logger.error(
                         f" >>> Fix the errors for Excel file {item['file_name']} and upload file again! <<<"
                     )
-                    # exit()
 
     # Run loading Phase
     if config["etl_pipeline"]["run_loading"]:
@@ -215,11 +217,16 @@ def pipeline_manager():
             ):
                 item = load_pickle_file(os.path.join(dir_path, file_name))
                 df = item["data_frame"]
-                url = get_gsheet_url(df, folder_id=config["google_folder_id"])
+                url = get_gsheet_url(
+                    df,
+                    file_name=item["file_name"],
+                    folder_id=config["google_folder_id"],
+                )
                 logger.info(f"G-sheet URL :{url}")
+                delete_file(os.path.join(dir_path, file_name))
 
     print("ETL pipeline completed")
 
 
 if __name__ == "__main__":
-    pipeline_manager()
+    pipeline_run()

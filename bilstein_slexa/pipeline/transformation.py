@@ -1,9 +1,12 @@
 import pandas as pd
 import logging
 import numpy as np
-from bilstein_slexa import tokenizer, model
+
+from bilstein_slexa.model_loader import ModelLoader
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
+
+model, tokenizer = ModelLoader.load_translation_model()
 
 
 def standardize_missing_values(df) -> pd.DataFrame:
@@ -153,6 +156,7 @@ def translate_and_merge_description(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The processed DataFrame with an updated 'description' column.
     """
+
     try:
         # Step 1: Translate the 'description' column
         df["translated_description"] = df["description"].apply(

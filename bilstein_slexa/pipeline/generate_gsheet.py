@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import gspread
 from google.oauth2.service_account import Credentials
@@ -105,7 +106,7 @@ def upload_to_google_sheet(df, folder_id, sheet_name, header_color=(0.5, 0.7, 0.
                     "green": header_color[1],
                     "blue": header_color[2],
                 },
-                "textFormat": {"bold": True, "fontSize": 13},
+                "textFormat": {"bold": True, "fontSize": 12},
                 "horizontalAlignment": "CENTER",
             },
         )
@@ -142,7 +143,7 @@ def upload_to_google_sheet(df, folder_id, sheet_name, header_color=(0.5, 0.7, 0.
 
 
 # Main function
-def get_gsheet_url(df, folder_id):
+def get_gsheet_url(df, folder_id, file_name):
     # Load the column mapping JSON
     column_mapping = load_column_mapping()
 
@@ -150,7 +151,7 @@ def get_gsheet_url(df, folder_id):
     df_ordered = order_columns(df, column_mapping)
 
     # Define the sheet name with date
-    sheet_name = f"Bilstein_Report_{datetime.now().strftime('%Y-%m-%d')}"
+    sheet_name = f"Bilstein_AG_{os.path.basename(file_name)}"
 
     # Upload DataFrame to Google Sheet and format headers
     sheet_url = upload_to_google_sheet(df_ordered, folder_id, sheet_name)

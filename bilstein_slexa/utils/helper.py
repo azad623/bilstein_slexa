@@ -89,3 +89,34 @@ def load_layout_schema(schema_path: str) -> dict | None:
         logger.error(f"Schema validation error: {e}")
     except Exception as e:
         logger.error(f"An unexpected error occurred while loading the schema: {e}")
+
+
+def delete_file(file_path):
+    """
+    Deletes the specified file if it exists and logs the action.
+
+    Args:
+        file_path (str): The path of the file to be deleted.
+
+    Raises:
+        ValueError: If the provided path is not a file.
+    """
+    # Sanity check: Ensure the file path is valid
+    if not isinstance(file_path, str):
+        logging.error("Invalid input: file_path should be a string.")
+
+    # Check if file exists
+    if not os.path.exists(file_path):
+        logging.warning(f"File not found: {file_path}. No action taken.")
+
+    # Check if the path is a file and not a directory
+    if not os.path.isfile(file_path):
+        logging.error(f"The provided path is not a file: {file_path}")
+        raise ValueError("The provided path is not a file.")
+
+    try:
+        # Attempt to delete the file
+        os.remove(file_path)
+        logging.info(f"File deleted successfully: {file_path}")
+    except Exception as e:
+        logging.error(f"Error deleting file {file_path}: {e}")

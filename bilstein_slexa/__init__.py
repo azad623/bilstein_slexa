@@ -5,16 +5,7 @@ import logging
 import logging.config
 from pathlib import Path
 from typing import Optional
-from transformers import MarianMTModel, MarianTokenizer
-
 import yaml
-
-
-def load_translator(src_lang, tgt_lang):
-    model_name = f"Helsinki-NLP/opus-mt-{src_lang}-{tgt_lang}"
-    tokenizer = MarianTokenizer.from_pretrained(model_name)
-    model = MarianMTModel.from_pretrained(model_name)
-    return tokenizer, model
 
 
 def get_yaml_config(file_path: Path) -> Optional[dict]:
@@ -61,9 +52,3 @@ local_data_output_path = str(Path(__file__).resolve().parents[1] / "outputs/")
 
 # finish repo path
 finish_repo_path = Path(__file__).parent.resolve() / "config/bilstein_finish_repo.yaml"
-
-# load translator
-# Load MarianMT model and tokenizer
-src_lang = "de"  # Source language code (e.g., German)
-tgt_lang = "en"  # Target language code (e.g., English)
-tokenizer, model = load_translator(src_lang, tgt_lang)
