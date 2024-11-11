@@ -34,7 +34,7 @@ __pycache__/
 .Python
 env/
 build/
-secrets/
+secrets/*
 develop-eggs/
 dist/
 downloads/
