@@ -5,7 +5,7 @@ from typing import Optional, List, Dict
 import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-from bilstein_slexa import config, source_schema_path
+from bilstein_slexa import config, source_schema_path, global_vars
 from bilstein_slexa.utils.helper import load_layout_schema
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
@@ -87,6 +87,7 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
     # Log report for unmatched schemas if no match was found
     logger.error(f"No matching schema found for {file_path}")
     for report in unmatched_schemas:
+        global_vars["error_list"].append(report)
         logger.error(f"{report}")
 
     return False

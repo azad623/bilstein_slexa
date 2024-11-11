@@ -1,7 +1,14 @@
 import os
 import yaml
 import streamlit as st
-from bilstein_slexa import logger, config, local_data_input_path, source_schema_path
+from bilstein_slexa import (
+    logger,
+    config,
+    local_data_input_path,
+    log_output_path,
+    source_schema_path,
+    global_vars,
+)
 from bilstein_slexa.getters.data_getter import generate_path_list
 from bilstein_slexa.getters.data_getter import load_excel_file
 from bilstein_slexa.pipeline.schema_validation import (
@@ -40,7 +47,10 @@ from bilstein_slexa.utils.database import Database
 from bilstein_slexa.pipeline.grade_checker import GradeChecker
 from bilstein_slexa.pipeline.finish_checker import FinishChecker
 from bilstein_slexa.pipeline.generate_gsheet import get_gsheet_url
-from bilstein_slexa.utils.helper import delete_file
+from bilstein_slexa.utils.helper import delete_file, delete_all_files
+
+# Define global variable to track the status of Excelsheet
+status = None
 
 
 def pipeline_run():
@@ -50,6 +60,8 @@ def pipeline_run():
     Args:
         config_path (str): Path to the YAML configuration file.
     """
+    delete_all_files(os.path.join(local_data_input_path, "interim"))
+    delete_all_files(log_output_path)
 
     if config["etl_pipeline"]["run_extraction"]:
         excel_path_list = generate_path_list(folder_name="tmp")
@@ -58,6 +70,8 @@ def pipeline_run():
                 file_name = os.path.basename(file_path).split(".")[0]
 
                 # Set up logging for each file
+                global_vars["error_list"] = []
+                status = False
                 logger = setup_logger(file_path, config)
                 logger.info(f"Starting processing for file: {file_path}")
 
@@ -65,9 +79,9 @@ def pipeline_run():
                 logger.info("<< Step 1: Loading Excel from from pre-define location >>")
                 df = load_excel_file(file_path)
                 if df is None:
-                    logger.error(
-                        f"Loader failed to load Excel file to dataframe for: {file_path}"
-                    )
+                    message = f"Loader failed to load Excel file to dataframe for: {file_path}"
+                    global_vars["error_list"].append(message)
+                    logger.error(message)
                     continue
 
                 # Step 2: Detec the header suing heuristic approach
@@ -78,17 +92,25 @@ def pipeline_run():
                 logger.info(
                     "<< Step 3: Validate dataframe layout against pre-defined source schemas >>\n"
                 )
-                if validate_with_all_schemas(df, file_path):
-                    save_pickle_file(
-                        {"file_name": file_name, "data_frame": df},
-                        file_name,
-                        folder="interim",
-                    )
-                    # write funtion to delete
-                    #  Excel file in future
+                status = validate_with_all_schemas(df, file_path)
+                print(f"error list >>{global_vars['error_list']}")
+                save_pickle_file(
+                    {
+                        "file_name": file_name,
+                        "data_frame": df,
+                        "status": status,
+                        "error_log": global_vars["error_list"],
+                    },
+                    file_name,
+                    folder="interim",
+                )
+
+                # write funtion to delete Excel file
                 delete_file(file_path)
         else:
-            print(f"Could not find any valid Excel file in {local_data_input_path}")
+            logger.error(
+                f"Could not find any valid Excel file in {local_data_input_path}"
+            )
 
         logger.info(f"Extration task is finished!\n\n")
 
@@ -98,6 +120,7 @@ def pipeline_run():
         # Setup the necessary path
         dir_path = os.path.join(local_data_input_path, "interim")
         schema = load_layout_schema(source_schema_path)
+        delete_all_files(os.path.join(local_data_input_path, "processed"))
 
         required_cols = get_required_columns(schema)
         header_translations = {
@@ -107,125 +130,150 @@ def pipeline_run():
         }
 
         # Loop in pickle objects and read the dataframes
+
         for file_name in os.listdir(dir_path):
+            status = False
+
             if os.path.isfile(os.path.join(dir_path, file_name)) and file_name.endswith(
                 ".pk"
             ):
                 item = load_pickle_file(os.path.join(dir_path, file_name))
-                df = item["data_frame"]
+                global_vars["error_list"] = []
+                if item["status"]:
 
-                # Set up logging for each file
-                # logger = setup_logger(item["file_name"], config)
+                    df = item["data_frame"]
 
-                # Fix data type after loading pickle file
-                df = fix_data_types(df, schema)
+                    # Set up logging for each file
+                    logger = setup_logger(item["file_name"], config)
 
-                # Convert all empty values to NAN
-                standardize_missing_values(df)
+                    # Fix data type after loading pickle file
+                    df = fix_data_types(df, schema)
 
-                # Drop rows when 90% of the required row values are empty
-                drop_rows_with_missing_values(df, required_cols, threshold=0.9)
+                    # Convert all empty values to NAN
+                    standardize_missing_values(df)
 
-                # Rename columns based on translations
-                df.rename(columns=header_translations, inplace=True)
+                    # Drop rows when 90% of the required row values are empty
+                    drop_rows_with_missing_values(df, required_cols, threshold=0.9)
 
-                # Run transformations and validations
-                df = transform_dimensions(df)
-                df = ensure_floating_point(df)
+                    # Rename columns based on translations
+                    df.rename(columns=header_translations, inplace=True)
 
-                validation_reports = {
-                    "missing_values": validate_missing_values(df),
-                    "unit_validation": validate_units(df),
-                    "frei_verwendbar": validate_frei_verwendbar(df),
-                }
+                    # Run transformations and validations
+                    df = transform_dimensions(df)
+                    df = ensure_floating_point(df)
 
-                # Print validation reports
-                for report_name, report in validation_reports.items():
-                    if not report.empty:
-                        logger.warning(f"\n{report_name.capitalize()} Report:")
-                        logger.warning(f"\n{report}")
+                    validation_reports = {
+                        "missing_values": validate_missing_values(df),
+                        "unit_validation": validate_units(df),
+                        "frei_verwendbar": validate_frei_verwendbar(df),
+                    }
 
-                # Aggregate data grouped by 'Q-Meldungsnummer'
-                non_identical_rows_flag, aggregated_df = aggregate_data(df)
+                    # Print validation reports
+                    for report_name, report in validation_reports.items():
+                        if not report.empty:
+                            global_vars["error_list"].append(report)
+                            logger.warning(f"\n{report_name.capitalize()} Report:")
+                            logger.warning(f"\n{report}")
 
-                if non_identical_rows_flag:
-                    # Initialize the database connection
-                    db = Database()
-                    try:
-                        # Translate description and merge columns[ description, bescheribung, batch_number]
-                        df = translate_and_merge_description(aggregated_df)
+                    # Aggregate data grouped by 'Q-Meldungsnummer'
+                    non_identical_rows_flag, aggregated_df = aggregate_data(df)
 
-                        # Check and update grade column
-                        grade_checker = GradeChecker(db)
-                        df = grade_checker.check_and_update_grade(
-                            df, grade_column="grade"
+                    if non_identical_rows_flag:
+                        # Initialize the database connection
+                        db = Database()
+                        try:
+                            # Translate description and merge columns[ description, bescheribung, batch_number]
+                            df = translate_and_merge_description(aggregated_df)
+
+                            # Check and update grade column
+                            grade_checker = GradeChecker(db)
+                            df = grade_checker.check_and_update_grade(
+                                df, grade_column="grade"
+                            )
+
+                            # Check and update finish column
+                            finish_checker = FinishChecker()
+                            df = finish_checker.check_and_update_finish(
+                                df, finish_column="finish"
+                            )
+
+                            # Add material form column
+                            df = add_material_form(df)
+
+                            # Convert the address code to real address
+                            df = convert_warehouse_address(df)
+
+                            # Add article ID column (same with bundle ID- only for internal usage)
+                            df = add_article_id(df)
+
+                            # Add material choice column (e,g 2nd, prime etc.)
+                            df = add_material_choice(df)
+
+                            # Add access default column
+                            df = add_access_default(df)
+
+                            # Add auction type columns
+                            df = add_auction_type(df)
+
+                            # Update status
+                            status = True
+
+                        except Exception as e:
+                            print(e)
+                        finally:
+                            # Close the connection when done
+                            db.close()
+                            del grade_checker
+                            del finish_checker
+
+                    else:
+                        df = None
+                        logger.error(
+                            f" >>> Fix the errors for Excel file {item['file_name']} and upload file again! <<<"
                         )
-
-                        # Check and update finish column
-                        finish_checker = FinishChecker()
-                        df = finish_checker.check_and_update_finish(
-                            df, finish_column="finish"
-                        )
-
-                        # Add material form column
-                        df = add_material_form(df)
-
-                        # Convert the address code to real address
-                        df = convert_warehouse_address(df)
-
-                        # Add article ID column (same with bundle ID- only for internal usage)
-                        df = add_article_id(df)
-
-                        # Add material choice column (e,g 2nd, prime etc.)
-                        df = add_material_choice(df)
-
-                        # Add access default column
-                        df = add_access_default(df)
-
-                        # Add auction type columns
-                        df = add_auction_type(df)
-                        df.to_csv("demo.csv")
-
-                        # save file as pickle object
-                        save_pickle_file(
-                            {"file_name": file_name, "data_frame": df},
-                            file_name,
-                            folder="processed",
-                        )
-
-                    except Exception as e:
-                        print(e)
-                    finally:
-                        # write function to delete pickle file
-
-                        # Close the connection when done
-                        db.close()
-                        del grade_checker
-                        del finish_checker
-                        delete_file(os.path.join(dir_path, file_name))
                 else:
-                    logger.error(
-                        f" >>> Fix the errors for Excel file {item['file_name']} and upload file again! <<<"
-                    )
+                    global_vars["error_list"] = item["error_log"]
+
+                # write function to delete pickle file
+                delete_file(os.path.join(dir_path, file_name))
+                save_pickle_file(
+                    {
+                        "file_name": file_name,
+                        "data_frame": df,
+                        "status": status,
+                        "error_log": global_vars["error_list"],
+                    },
+                    file_name,
+                    folder="processed",
+                )
 
     # Run loading Phase
     if config["etl_pipeline"]["run_loading"]:
+        dataframes = []
         dir_path = os.path.join(local_data_input_path, "processed")
         for file_name in os.listdir(dir_path):
+            url = None
+            df = None
             if os.path.isfile(os.path.join(dir_path, file_name)) and file_name.endswith(
                 ".pk"
             ):
                 item = load_pickle_file(os.path.join(dir_path, file_name))
-                df = item["data_frame"]
-                url = get_gsheet_url(
-                    df,
-                    file_name=item["file_name"],
-                    folder_id=config["google_folder_id"],
+                if item["status"]:
+                    df = item["data_frame"]
+                    url = get_gsheet_url(
+                        df,
+                        file_name=item["file_name"],
+                        folder_id=config["google_folder_id"],
+                    )
+                    logger.info(f"G-sheet URL :{url}")
+
+                dataframes.append(
+                    (item["status"], df, item["file_name"], item["error_log"], url)
                 )
-                logger.info(f"G-sheet URL :{url}")
                 delete_file(os.path.join(dir_path, file_name))
 
-    print("ETL pipeline completed")
+        print("ETL pipeline completed")
+        return dataframes
 
 
 if __name__ == "__main__":

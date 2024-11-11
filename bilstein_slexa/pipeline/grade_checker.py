@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 import re
+from bilstein_slexa import global_vars
 
 # Configure logging
 logger = logging.getLogger("<Bilstein SLExA ETL>")
@@ -92,13 +93,13 @@ class GradeChecker:
             if isinstance(candidate, str):
                 updated_grade, matched = self.match_grade(candidate)
                 if matched:
-                    logging.info(
+                    logger.info(
                         f"Grade '{candidate}' matched with database entry. Updated to '{updated_grade}'"
                     )
                 else:
-                    logging.warning(
-                        f"Grade '{candidate}' in row {idx+2} not found in database. No changes applied."
-                    )
+                    message = f"Grade '{candidate}' with bundle_id {df['bundle_id'].loc[idx]} not found in database. No changes applied."
+                    global_vars["error_list"].append(message)
+                    logger.warning(message)
 
                 # Update the DataFrame with the validated or original grade
                 df.at[idx, grade_column] = updated_grade

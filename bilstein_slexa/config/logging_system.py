@@ -21,10 +21,10 @@ class CustomLogger(logging.Logger):
         error_out_path = os.path.join(log_output_path, f"{base_name}.error.log")
 
         # Remove existing log files if rewrite is enabled
-        if config["etl_pipeline"].get("rewrite_log", False):
-            for path in [info_out_path, error_out_path]:
-                if os.path.exists(path):
-                    os.remove(path)
+        # if config["etl_pipeline"].get("rewrite_log", False):
+        #    for path in [info_out_path, error_out_path]:
+        #        if os.path.exists(path):
+        #            os.remove(path)
 
         # Update handler paths in config
         logging_cfg["handlers"]["info_file_handler"]["filename"] = info_out_path

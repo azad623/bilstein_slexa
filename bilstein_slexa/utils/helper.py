@@ -120,3 +120,36 @@ def delete_file(file_path):
         logging.info(f"File deleted successfully: {file_path}")
     except Exception as e:
         logging.error(f"Error deleting file {file_path}: {e}")
+
+
+def delete_all_files(folder_path):
+    """
+    Delete all files in the specified folder.
+
+    Args:
+        folder_path (str): Path to the folder.
+
+    Returns:
+        None
+    """
+    try:
+        # List all files in the folder
+        files = [
+            os.path.join(folder_path, file)
+            for file in os.listdir(folder_path)
+            if os.path.isfile(os.path.join(folder_path, file))
+        ]
+
+        # Delete each file
+        for file in files:
+            os.remove(file)
+            print(f"Deleted: {file}")
+
+        print("All files have been deleted.")
+
+    except FileNotFoundError:
+        print(f"The folder '{folder_path}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied to delete files in '{folder_path}'.")
+    except Exception as e:
+        print(f"An error occurred: {e}")

@@ -22,7 +22,7 @@ google-cloud-storage
 openpyxl
 fuzzywuzzy
 psycopg2-binary
-dotenv
+python-dotenv
 sentencepiece
 transformers
 huggingface
@@ -33,3 +33,4 @@ google-auth-httplib2
 google-api-python-client
 streamlit
 structlog
+matplotlib
