@@ -93,13 +93,13 @@ class GradeChecker:
             if isinstance(candidate, str):
                 updated_grade, matched = self.match_grade(candidate)
                 if matched:
-                    logging.info(
+                    logger.info(
                         f"Grade '{candidate}' matched with database entry. Updated to '{updated_grade}'"
                     )
                 else:
                     message = f"Grade '{candidate}' with bundle_id {df['bundle_id'].loc[idx]} not found in database. No changes applied."
                     global_vars["error_list"].append(message)
-                    logging.warning(message)
+                    logger.warning(message)
 
                 # Update the DataFrame with the validated or original grade
                 df.at[idx, grade_column] = updated_grade

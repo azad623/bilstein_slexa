@@ -3,6 +3,7 @@ import os
 from bilstein_slexa import config, local_data_input_path, log_output_path
 from bilstein_slexa.pipeline.pipeline_manager import pipeline_run
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Constants
 RAW_FOLDER = os.path.join(local_data_input_path, "tmp")
@@ -18,7 +19,7 @@ st.markdown(
     """
     <style>
     .stButton > button {
-        background-color: #4CAF50; /* Green background */
+        background-color: #6fb9ed; /* Blue background */
         color: white;
         padding: 10px 20px;
         font-size: 16px;
@@ -29,7 +30,7 @@ st.markdown(
         margin: 5px; /* Space between buttons */
     }
     .stButton > button:hover {
-        background-color: #45a049; /* Darker green on hover */
+        background-color: #17659c; /* Darker green on hover */
     }
     </style>
     """,
@@ -92,9 +93,40 @@ def format_error_message(error_text):
 def display_data_in_tabs(tabs, df_list, start, end):
     for tab, (status, df, filename, error_list, url) in zip(tabs, df_list[start:end]):
         with tab:
-            st.header(f"{filename}")
-            if url:
-                st.markdown(f"[Google Sheet]({url})")
+            col1, col2, col3 = st.columns([3, 1, 1])
+            with col1:
+                st.header(f"{filename}")
+            with col3:
+                if status:
+                    table_size = df.shape
+                else:
+                    table_size = None
+                data = {
+                    "Metric": ["Status", "Table Size"],
+                    "Value": [status, table_size],  # Example values
+                }
+                # Convert to DataFrame
+                df_status = pd.DataFrame(data)
+                # Display table in Streamlit
+                st.table(df_status.reset_index(drop=True))
+
+            col1, col2, col3 = st.columns([1, 3, 1])
+            with col1:
+                if url:
+                    st.markdown(f"[Google Sheet]({url})")
+            with col3:
+                if status:
+                    # Convert DataFrame to CSV
+                    st.session_state[f"csv_{filename}"] = df.to_csv(index=False)
+
+                    # Create a download button
+                    st.download_button(
+                        label="Download data as CSV",
+                        key=f"dl_{filename}_btn",
+                        data=st.session_state[f"csv_{filename}"],
+                        file_name="data.csv",
+                        mime="text/csv",
+                    )
             if status:
                 st.dataframe(df, height=400, width=1000)
             else:
@@ -157,6 +189,26 @@ def app():
     # Show the data if already processed
     if "dataframes" in st.session_state:
         dataframes = st.session_state["dataframes"]
+        passed_count = sum(1 for item in dataframes if item[0])
+        failed_count = len(dataframes) - passed_count
+        fig, ax = plt.subplots(facecolor="#f0f2f6")  # Set figure background color
+        ax.set_facecolor("#f0f2f6")  # Set axes background color
+
+        ax.pie(
+            [passed_count, failed_count],
+            labels=["Passed", "Failed"],
+            autopct="%1.1f%%",
+            startangle=90,
+            colors=["#4CAF50", "#FF6347"],  # Green for passed, red for failed
+        )
+        ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        # Display the pie chart in the sidebar
+
+        st.sidebar.markdown(
+            "<div style='height: 100px;'></div>", unsafe_allow_html=True
+        )  # Adjust 'height' as needed
+        st.sidebar.pyplot(fig)
 
         if st.session_state.get("show_info_message", False):
             st.success("Data loaded successfully.")
