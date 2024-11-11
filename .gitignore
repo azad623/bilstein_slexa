@@ -34,7 +34,6 @@ __pycache__/
 .Python
 env/
 build/
-secrets/
 develop-eggs/
 dist/
 downloads/
@@ -85,7 +84,6 @@ docs/_build/
 target/
 
 # configuration
-.env
 .config
 *.config
 

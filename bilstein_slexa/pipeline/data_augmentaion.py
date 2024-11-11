@@ -1,7 +1,7 @@
 import pandas as pd
 import logging
 import numpy as np
-from bilstein_slexa import config
+from bilstein_slexa import config, global_vars
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
 
@@ -30,9 +30,9 @@ def add_material_form(df: pd.DataFrame, threshold=600) -> pd.DataFrame:
                 else:
                     df.at[idx, "form"] = "Slit Coils"
             else:
-                logger.warning(
-                    f"Non-numeric value encountered at index {df['bundle_id'].iloc[idx]} in '{column_name}': {width_size}"
-                )
+                message = f"Non-numeric value encountered at index{df['bundle_id'].iloc[idx]} in '{column_name}': {width_size}"
+                global_vars["error_list"].append(message)
+                logger.warning()
 
         logger.info("The column 'form' was updated successfully.")
         return df
@@ -73,9 +73,10 @@ def convert_warehouse_address(df: pd.DataFrame) -> pd.DataFrame:
                         df.at[idx, column_name] = add_dict[loc]
                     else:
                         df.at[idx, column_name] = np.nan
-                        logger.warning(
-                            f"Location ID '{loc}' not found in YAML file. Bundle ID: {df['bundle_id'].iloc[idx]}"
-                        )
+                        message = f"Location ID '{loc}' not found in YAML file. Bundle ID: {df['bundle_id'].iloc[idx]}"
+                        global_vars["error_list"].append(message)
+                        logger.warning(message)
+
                 else:
                     logger.warning(
                         f"Non-string value encountered in '{column_name}' at Bundle ID {df['bundle_id'].iloc[idx]}: {loc}"

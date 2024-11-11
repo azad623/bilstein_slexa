@@ -1,5 +1,6 @@
 import pandas as pd
 import logging
+from bilstein_slexa import global_vars
 
 logger = logging.getLogger("<Bilstein SLExA ETL>")
 
@@ -45,30 +46,26 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
                 quantity=("weight", "count"),
                 grade=(
                     "grade",
-                    lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
+                    lambda x: ",".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
                 finish=(
                     "finish",
-                    lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
+                    lambda x: ",".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
                 min_price=(
                     "min_price",
                     lambda x: (
-                        ", ".join(map(str, x.unique()))
-                        if x.nunique() > 1
-                        else x.iloc[0]
+                        ",".join(map(str, x.unique())) if x.nunique() > 1 else x.iloc[0]
                     ),
                 ),
                 location=(
                     "location",
-                    lambda x: ", ".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
+                    lambda x: ",".join(x.unique()) if x.nunique() > 1 else x.iloc[0],
                 ),
                 thickness=(
                     "thickness(mm)",
                     lambda x: (
-                        ", ".join(map(str, x.unique()))
-                        if x.nunique() > 1
-                        else x.iloc[0]
+                        ",".join(map(str, x.unique())) if x.nunique() > 1 else x.iloc[0]
                     ),
                 ),
                 width=(
@@ -112,7 +109,7 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
         aggregated_df_rep = pd.DataFrame()
         for col in validation_columns:
             aggregated_df_rep[f"{col}_identical"] = aggregated_df[col].apply(
-                lambda x: len(set(x.split(", "))) == 1 if isinstance(x, str) else True
+                lambda x: len(set(x.split(","))) == 1 if isinstance(x, str) else True
             )
 
         # Log warnings for non-identical values
@@ -122,6 +119,9 @@ def aggregate_data(df) -> tuple[bool, pd.DataFrame]:
             if not non_identical_rows.empty:
                 logger.error(
                     f"Details of non-identical rows:\n{non_identical_rows[['bundle_id', col]]}"
+                )
+                global_vars["error_list"].append(
+                    f"Details of non-identical rows:\n{non_identical_rows[['bundle_id', col]].to_string(index=False)}"
                 )
                 non_identical_rows_flag = False
 

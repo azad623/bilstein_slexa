@@ -22,7 +22,7 @@ google-cloud-storage
 openpyxl
 fuzzywuzzy
 psycopg2-binary
-dotenv
+python-dotenv
 sentencepiece
 transformers
 huggingface

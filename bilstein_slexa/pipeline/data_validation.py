@@ -5,11 +5,13 @@ logger = logging.getLogger("<Bilstein SLExA ETL>")
 
 
 def validate_missing_values(df):
-    required_columns = ["thickness(mm)", "width(mm)", "grade", "weight"]
-    missing_values_report = df[df[required_columns].isnull().any(axis=1)]
+    required_columns = ["thickness(mm)", "width(mm)", "min_price", "weight"]
+    missing_values_report = df[df[required_columns].isnull().any(axis=1)].reset_index(
+        drop=True
+    )
     if not missing_values_report.empty:
         logging.warning(
-            "Missing values found in ('thickness(mm)', 'width(mm)', 'grade', 'weight') columns."
+            "Missing values found in ('thickness(mm)', 'width(mm)', 'min_price', 'weight') columns."
         )
     return missing_values_report
 

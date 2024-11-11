@@ -23,6 +23,8 @@ service_account_path = str(
     os.path.join(PROJECT_DIR, "secrets/azadsandbox-437909-ee45e051e930.json")
 )
 
+# Collect errors
+global_vars = {"error_list": []}
 
 # Define log output locations
 log_output_path = str(Path(__file__).parent.resolve() / "logs/")

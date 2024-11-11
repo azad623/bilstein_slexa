@@ -1,7 +1,7 @@
 import pandas as pd
 import yaml
 import logging
-from bilstein_slexa import finish_repo_path
+from bilstein_slexa import finish_repo_path, global_vars
 import numpy as np
 
 # Configure logging
@@ -53,9 +53,9 @@ class FinishChecker:
                     f"Finish ID '{finish_id}' matched. Updated to '{finish_data['finish_1']}'"
                 )
             else:
+                message = f"Finish ID '{finish_id}' not found in bundle ID {df['bundle_id'].loc[idx]} in the YAML data. Updated to 'NaN'"
                 df.at[idx, "finish_2"] = np.nan
-                logging.warning(
-                    f"Finish ID '{finish_id}' not found in bundle ID {df['bundle_id'].loc[idx]} in the YAML data. Updated to 'NaN'"
-                )
+                global_vars["error_list"].append(message)
+                logging.warning(message)
         df.rename(columns={finish_column: "finish_1"}, inplace=True)
         return df
