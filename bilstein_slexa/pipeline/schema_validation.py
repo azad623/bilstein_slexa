@@ -38,57 +38,69 @@ def get_required_columns(schema: Dict) -> List[str]:
 
 def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
     """
-    Validate the DataFrame against multiple schemas in the specified folder. If no schema matches,
-    log differences in column names and return None. If a schema matches, validate and fix data types
-    and return the matched material values.
+    Validate the DataFrame against a specified schema. If the schema does not match,
+    log missing or empty columns and return False. If a schema matches, validate and fix data types,
+    and return True.
 
     Args:
         df (pd.DataFrame): The DataFrame loaded from the file.
-        schema_folder (str): Path to the folder containing JSON schema files.
         file_path (str): The path to the file being validated.
 
     Returns:
-        (bool, Optional[list]): True and material values if matched; otherwise, False and None.
+        bool: True if schema matches; otherwise, False.
     """
     unmatched_schemas = []
 
-    # Normalize DataFrame column names (remove spaces and lowercase)
-    df.columns = [col for col in df.columns]
+    # Normalize DataFrame column names
+    df.columns = [col.strip() for col in df.columns]
     schema = load_layout_schema(source_schema_path)
     required_columns = get_required_columns(schema)
 
-    # Check if all required columns are present using fuzzy matching
+    # Match columns and apply fuzzy matching
     matched_columns = match_and_fix_columns(df, required_columns)
 
-    # Check if all required columns are present
     if required_columns == matched_columns:
+        # Check if any required columns have empty values
+        empty_columns = [col for col in required_columns if df[col].isnull().all()]
+
+        if empty_columns:
+            unmatched_schemas.append(
+                {"schema": source_schema_path, "empty_columns": empty_columns}
+            )
+            global_vars["error_list"].append(unmatched_schemas)
+            logger.warning(
+                f"Schema match found, but some required columns are empty: {empty_columns}"
+            )
+            return False
+
         logger.info(
             f"Schema match found for {file_path} with schema {source_schema_path}"
         )
-        # Match and fix data types
-        #  df = fix_data_types(df, schema)
 
-        # Delete uncessary columns from dataframe
+        # Optionally match and fix data types if needed
+        # df = fix_data_types(df, schema)
+
+        # Remove unnecessary columns from DataFrame
         delete_extra_columns(df, required_columns)
-        logger.info(f"Extra columns drops >> {df.columns}")
+        logger.info(f"Extra columns removed: {df.columns}")
 
         return True
 
-    # Collect differences for unmatched schemas
+    # Log details for unmatched schemas
     unmatched_schemas.append(
         {
             "schema": source_schema_path,
             "missing_columns": [
-                col for col in required_columns if col not in df.columns
+                col for col in required_columns if col not in matched_columns
             ],
         }
     )
 
-    # Log report for unmatched schemas if no match was found
+    # Log errors for unmatched schemas
     logger.error(f"No matching schema found for {file_path}")
     for report in unmatched_schemas:
         global_vars["error_list"].append(report)
-        logger.error(f"{report}")
+        logger.error(f"Schema mismatch details: {report}")
 
     return False
 
