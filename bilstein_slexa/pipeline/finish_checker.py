@@ -53,8 +53,8 @@ class FinishChecker:
                     f"Finish ID '{finish_id}' matched. Updated to '{finish_data['finish_1']}'"
                 )
             else:
-                message = f"Finish ID '{finish_id}' not found in bundle ID {df['bundle_id'].loc[idx]} in the YAML data. Updated to 'NaN'"
-                df.at[idx, "finish_2"] = np.nan
+                message = f"Finish ID '{finish_id}' not found in Bundle Id {df['bundle_id'].loc[idx]} in the YAML data. Updated to 'NaN'"
+                df.at[idx, finish_column] = np.nan
                 global_vars["error_list"].append(message)
                 logger.warning(message)
         df.rename(columns={finish_column: "finish_1"}, inplace=True)

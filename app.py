@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import time  # Import the time library
 from bilstein_slexa import config, local_data_input_path, log_output_path
 from bilstein_slexa.pipeline.pipeline_manager import pipeline_run
 import pandas as pd
@@ -182,14 +183,24 @@ def app():
         for uploaded_file in uploaded_files:
             with open(os.path.join(RAW_FOLDER, uploaded_file.name), "wb") as f:
                 f.write(uploaded_file.getbuffer())
+
+        # Start timing
+        start_time = time.time()
         try:
-            with st.spinner("Processing..."):
+            with st.spinner("Processing..."):  # main function to get data
                 dataframes = pipeline_run()
                 st.session_state["dataframes"] = dataframes  # Store in session state
                 st.session_state["show_info_message"] = True  # Show success message
                 st.session_state["current_page"] = 1  # Reset to first page
         except Exception as e:
             st.error(f"An error occurred: {e}")
+        # Calculate the processing time
+        processing_time = time.time() - start_time  # Time in seconds
+        formatted_time = f"{processing_time:.2f} seconds"
+        if processing_time >= 60:
+            minutes = int(processing_time // 60)
+            seconds = processing_time % 60
+            formatted_time = f"{minutes} min {seconds:.2f} sec"
 
     # Show the data if already processed
     if "dataframes" in st.session_state:
@@ -216,7 +227,9 @@ def app():
         st.sidebar.pyplot(fig)
 
         if st.session_state.get("show_info_message", False):
-            st.success("Data loaded successfully.")
+            st.success(
+                f"Pipeline processed the documents successfully in {formatted_time}"
+            )
             st.session_state["show_info_message"] = False  # Only show message once
 
         # Pagination setup
