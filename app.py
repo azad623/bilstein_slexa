@@ -4,6 +4,7 @@ from bilstein_slexa import config, local_data_input_path, log_output_path
 from bilstein_slexa.pipeline.pipeline_manager import pipeline_run
 import pandas as pd
 import matplotlib.pyplot as plt
+from streamlit_navigation_bar import st_navbar
 
 # Constants
 RAW_FOLDER = os.path.join(local_data_input_path, "tmp")
@@ -13,6 +14,7 @@ ERROR_LOG_SUFFIX = ".error.log"
 
 # Set up page configuration - must be the first Streamlit command
 st.set_page_config(page_title="Bilstein SLExA", layout="wide")
+
 
 # CSS for styled buttons
 st.markdown(
@@ -121,6 +123,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
 
                     # Create a download button
                     st.download_button(
+                        type="primary",
                         label="Download data as CSV",
                         key=f"dl_{filename}_btn",
                         data=st.session_state[f"csv_{filename}"],
@@ -128,28 +131,29 @@ def display_data_in_tabs(tabs, df_list, start, end):
                         mime="text/csv",
                     )
             if status:
-                st.dataframe(df, height=400, width=1000)
+                st.dataframe(df, height=400, hide_index=True)
             else:
                 for error in error_list:
                     st.error(format_error_message(error))
                 st.error("Please fix the errors and re-upload the document!")
 
             # Set up columns for Info and Error buttons
-            col1, col2, col3 = st.columns([1, 2, 1])
+            col1, col2, col3 = st.columns([1, 4, 1])
             filename = filename.split(".")[0]
-            with col1:
-                # Display Info Log if button is clicked
-                if st.button(f"Info log", key=f"info_{filename}"):
-                    st.session_state[f"info_log_{filename}"] = read_log_file(
-                        f"{filename}{INFO_LOG_SUFFIX}"
-                    )
+            with st.container(border=True):
+                with col1:
+                    # Display Info Log if button is clicked
+                    if st.button(f"Info log", key=f"info_{filename}"):
+                        st.session_state[f"info_log_{filename}"] = read_log_file(
+                            f"{filename}{INFO_LOG_SUFFIX}"
+                        )
 
-            with col3:
-                # Display Error Log if button is clicked
-                if st.button(f"Error log", key=f"error_{filename}"):
-                    st.session_state[f"error_log_{filename}"] = read_log_file(
-                        f"{filename}{ERROR_LOG_SUFFIX}"
-                    )
+                with col3:
+                    # Display Error Log if button is clicked
+                    if st.button(f"Error log", key=f"error_{filename}"):
+                        st.session_state[f"error_log_{filename}"] = read_log_file(
+                            f"{filename}{ERROR_LOG_SUFFIX}"
+                        )
 
             # Show log content in expanders based on session state
             if st.session_state.get(f"info_log_{filename}"):
@@ -164,6 +168,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
 # Main app function
 def app():
     #  st.set_page_config(page_title="Bilstein SLExA", layout="wide")
+
     display_header()
 
     st.sidebar.header("Upload Excel Files")
