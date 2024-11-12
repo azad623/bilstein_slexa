@@ -26,7 +26,8 @@ python-dotenv
 sentencepiece
 transformers
 huggingface
-torch torchvision
+torch
+torchvision
 gspread
 google-auth-oauthlib
 google-auth-httplib2
