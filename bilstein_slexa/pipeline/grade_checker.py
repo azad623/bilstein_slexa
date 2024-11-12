@@ -97,11 +97,15 @@ class GradeChecker:
                         f"Grade '{candidate}' matched with database entry. Updated to '{updated_grade}'"
                     )
                 else:
-                    message = f"Grade '{candidate}' with bundle_id {df['bundle_id'].loc[idx]} not found in database. No changes applied."
+                    message = f"Grade '{candidate}' with Bundle Id {df['bundle_id'].loc[idx]} was not found in database. No mapping applied."
                     global_vars["error_list"].append(message)
                     logger.warning(message)
 
                 # Update the DataFrame with the validated or original grade
                 df.at[idx, grade_column] = updated_grade
+            else:
+                message = f"Grade '{candidate}' with Bundle Id {df['bundle_id'].loc[idx]} is empty"
+                global_vars["error_list"].append(message)
+                logger.warning(message)
 
         return df

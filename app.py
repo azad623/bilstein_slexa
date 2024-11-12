@@ -1,9 +1,11 @@
 import streamlit as st
 import os
+import time  # Import the time library
 from bilstein_slexa import config, local_data_input_path, log_output_path
 from bilstein_slexa.pipeline.pipeline_manager import pipeline_run
 import pandas as pd
 import matplotlib.pyplot as plt
+from streamlit_navigation_bar import st_navbar
 
 # Constants
 RAW_FOLDER = os.path.join(local_data_input_path, "tmp")
@@ -13,6 +15,7 @@ ERROR_LOG_SUFFIX = ".error.log"
 
 # Set up page configuration - must be the first Streamlit command
 st.set_page_config(page_title="Bilstein SLExA", layout="wide")
+
 
 # CSS for styled buttons
 st.markdown(
@@ -121,6 +124,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
 
                     # Create a download button
                     st.download_button(
+                        type="primary",
                         label="Download data as CSV",
                         key=f"dl_{filename}_btn",
                         data=st.session_state[f"csv_{filename}"],
@@ -128,28 +132,29 @@ def display_data_in_tabs(tabs, df_list, start, end):
                         mime="text/csv",
                     )
             if status:
-                st.dataframe(df, height=400, width=1000)
+                st.dataframe(df, height=400, hide_index=True)
             else:
                 for error in error_list:
                     st.error(format_error_message(error))
                 st.error("Please fix the errors and re-upload the document!")
 
             # Set up columns for Info and Error buttons
-            col1, col2, col3 = st.columns([1, 2, 1])
+            col1, col2, col3 = st.columns([1, 4, 1])
             filename = filename.split(".")[0]
-            with col1:
-                # Display Info Log if button is clicked
-                if st.button(f"Info log", key=f"info_{filename}"):
-                    st.session_state[f"info_log_{filename}"] = read_log_file(
-                        f"{filename}{INFO_LOG_SUFFIX}"
-                    )
+            with st.container(border=True):
+                with col1:
+                    # Display Info Log if button is clicked
+                    if st.button(f"Info log", key=f"info_{filename}"):
+                        st.session_state[f"info_log_{filename}"] = read_log_file(
+                            f"{filename}{INFO_LOG_SUFFIX}"
+                        )
 
-            with col3:
-                # Display Error Log if button is clicked
-                if st.button(f"Error log", key=f"error_{filename}"):
-                    st.session_state[f"error_log_{filename}"] = read_log_file(
-                        f"{filename}{ERROR_LOG_SUFFIX}"
-                    )
+                with col3:
+                    # Display Error Log if button is clicked
+                    if st.button(f"Error log", key=f"error_{filename}"):
+                        st.session_state[f"error_log_{filename}"] = read_log_file(
+                            f"{filename}{ERROR_LOG_SUFFIX}"
+                        )
 
             # Show log content in expanders based on session state
             if st.session_state.get(f"info_log_{filename}"):
@@ -164,6 +169,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
 # Main app function
 def app():
     #  st.set_page_config(page_title="Bilstein SLExA", layout="wide")
+
     display_header()
 
     st.sidebar.header("Upload Excel Files")
@@ -177,14 +183,24 @@ def app():
         for uploaded_file in uploaded_files:
             with open(os.path.join(RAW_FOLDER, uploaded_file.name), "wb") as f:
                 f.write(uploaded_file.getbuffer())
+
+        # Start timing
+        start_time = time.time()
         try:
-            with st.spinner("Processing..."):
+            with st.spinner("Processing..."):  # main function to get data
                 dataframes = pipeline_run()
                 st.session_state["dataframes"] = dataframes  # Store in session state
                 st.session_state["show_info_message"] = True  # Show success message
                 st.session_state["current_page"] = 1  # Reset to first page
         except Exception as e:
             st.error(f"An error occurred: {e}")
+        # Calculate the processing time
+        processing_time = time.time() - start_time  # Time in seconds
+        formatted_time = f"{processing_time:.2f} seconds"
+        if processing_time >= 60:
+            minutes = int(processing_time // 60)
+            seconds = processing_time % 60
+            formatted_time = f"{minutes} min {seconds:.2f} sec"
 
     # Show the data if already processed
     if "dataframes" in st.session_state:
@@ -211,7 +227,9 @@ def app():
         st.sidebar.pyplot(fig)
 
         if st.session_state.get("show_info_message", False):
-            st.success("Data loaded successfully.")
+            st.success(
+                f"Pipeline processed the documents successfully in {formatted_time}"
+            )
             st.session_state["show_info_message"] = False  # Only show message once
 
         # Pagination setup
