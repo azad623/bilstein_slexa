@@ -161,9 +161,10 @@ def pipeline_run():
                     # Run transformations and validations
                     df = transform_dimensions(df)
                     df = ensure_floating_point(df)
+                    not_missed, missing_values = validate_missing_values(df)
 
                     validation_reports = {
-                        "missing_values": validate_missing_values(df),
+                        "missing_values": missing_values,
                         "unit_validation": validate_units(df),
                         "frei_verwendbar": validate_frei_verwendbar(df),
                     }
@@ -178,7 +179,7 @@ def pipeline_run():
                     # Aggregate data grouped by 'Q-Meldungsnummer'
                     non_identical_rows_flag, aggregated_df = aggregate_data(df)
 
-                    if non_identical_rows_flag:
+                    if non_identical_rows_flag and not_missed:
                         # Initialize the database connection
                         db = Database()
                         try:
