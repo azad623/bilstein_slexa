@@ -36,3 +36,4 @@ streamlit
 structlog
 matplotlib
 streamlit-navigation-bar
+plotly

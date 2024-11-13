@@ -16,10 +16,10 @@
       "name": "Auction Tag",
       "dtype": "string",
       "example_value": "Repeat auction",
-      "map": ""
+      "map": "auction_tag"
     },
     {
-      "name": "Product Location (UUID)",
+      "name": "Product Location",
       "dtype": "string",
       "example_value": "Im Weinhof 36 Hagen DE 58119",
       "map": "location"
@@ -31,22 +31,40 @@
       "map": "access"
     },
     {
-      "name": "Auction Comments",
+      "name": "Comments",
       "dtype": "string",
       "example_value": "",
       "map": ""
     },
     {
-      "name": "Article ID (internal)",
+      "name": "Palletized (for Coils only)",
+      "dtype": "string",
+      "example_value": "",
+      "map": ""
+    },
+    {
+      "name": "Article ID",
       "dtype": "string",
       "example_value": "30052326",
       "map": "article_id"
+    },
+    {
+      "name": "Material",
+      "dtype": "string",
+      "example_value": "30052326",
+      "map": "material"
     },
     {
       "name": "Form",
       "dtype": "string",
       "example_value": "Slit Coils",
       "map": "form"
+    },
+    {
+      "name": "Finish",
+      "dtype": "string",
+      "example_value": "C440",
+      "map": "finish_1"
     },
     {
       "name": "Choice",
@@ -61,22 +79,10 @@
       "map": "grade"
     },
     {
-      "name": "Finish_1",
+      "name": "Category",
       "dtype": "string",
-      "example_value": "C440",
-      "map": "finish_1"
-    },
-    {
-      "name": "Finish_2",
-      "dtype": "string",
-      "example_value": "",
-      "map": "finish_2"
-    },
-    {
-      "name": "Finish_3",
-      "dtype": "string",
-      "example_value": "",
-      "map": ""
+      "example_value": "DC01",
+      "map": "category"
     },
     {
       "name": "Coating",
@@ -151,7 +157,7 @@
       "map": ""
     },
     {
-      "name": "Defect Description per Line Item",
+      "name": "Defect Description",
       "dtype": "string",
       "example_value": "Cancellation by customers / Stornierung durch Kunden / Altlast VK 1 A Material",
       "map": "description"
@@ -163,7 +169,7 @@
       "map": "quantity"
     },
     {
-      "name": "Total Weight (KGs)",
+      "name": "Total Weight",
       "dtype": "float",
       "example_value": 8368,
       "map": "weight"
@@ -181,10 +187,10 @@
       "map": ""
     },
     {
-      "name": "Location",
+      "name": "Supplier Min Price",
       "dtype": "string",
       "example_value": "",
-      "map": ""
+      "map": "supplier_min"
     },
     {
       "name": "Mill of Origin",
@@ -194,6 +200,18 @@
     },
     {
       "name": "Tensile Strength, Rm (MPa)",
+      "dtype": "string",
+      "example_value": "",
+      "map": ""
+    },
+    {
+      "name": "Yield Strength (MPa)",
+      "dtype": "string",
+      "example_value": "",
+      "map": ""
+    },
+    {
+      "name": "Original Supplier",
       "dtype": "string",
       "example_value": "",
       "map": ""

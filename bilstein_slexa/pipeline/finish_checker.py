@@ -38,7 +38,7 @@ class FinishChecker:
         finish_dict = {str(item["finish_id"]): item for item in self.finishes}
 
         # Initialize finish2 column
-        df["finish_2"] = np.nan
+        # df["finish_2"] = np.nan
 
         for idx, finish_id in df[finish_column].items():
             if finish_id in finish_dict:
@@ -46,9 +46,9 @@ class FinishChecker:
                 df.at[idx, finish_column] = finish_data[
                     "finish_1"
                 ]  # Update finish column with finish1
-                df.at[idx, "finish_2"] = finish_data.get(
-                    "finish_2"
-                )  # Update finish2 if it exists
+                # df.at[idx, "finish_2"] = finish_data.get(
+                #     "finish_2"
+                # )  # Update finish2 if it exists
                 logger.info(
                     f"Finish ID '{finish_id}' matched. Updated to '{finish_data['finish_1']}'"
                 )

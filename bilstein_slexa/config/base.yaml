@@ -30,13 +30,30 @@ dtype_map:
 template_data:
   warehause_address:
     {
-      "100": "Im Weinhof 36 Hagen DE 58119",
-      "139": "Oeger Straße 11-35 Hagen DE 58119",
-      "127": "Unterberchum 30 Hagen DE 58093",
-      "101": "Im Weinhof 36 Hagen DE 58119",
+      "100":
+        {
+          "address": "Im Weinhof 36 Hagen DE 58119",
+          "UUID": "b2c744a8-11ef-4f67-9788-1a28054b7a50",
+        },
+      "139":
+        {
+          "address": "Oeger Straße 11-35 Hagen DE 58119",
+          "UUID": "09760b77-355d-44c9-ada0-0be2b841be3f",
+        },
+      "127":
+        {
+          "address": "Unterberchum 30 Hagen DE 58093",
+          "UUID": "73091e0e-647a-4081-833f-b3f59451e4a4",
+        },
+      "101":
+        {
+          "address": "Im Weinhof 36 Hagen DE 58119",
+          "UUID": "b2c744a8-11ef-4f67-9788-1a28054b7a50",
+        },
     }
   action_type: "Blind"
   access: "Open"
   choice: "2nd"
+  auction_tag: "repeated"
 
 google_folder_id: "1ZmDDaCkE2ZyWOYvksTeveim2-vWoR1b8"

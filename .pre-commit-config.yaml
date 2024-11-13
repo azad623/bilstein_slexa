@@ -20,13 +20,13 @@ repos:
         entry: end-of-file-fixer
         language: system
         types: [text]
-        stages: [commit, push, manual]
+        stages: [pre-commit, pre-push, manual]
       - id: trailing-whitespace
         name: Trim Trailing Whitespace
         entry: trailing-whitespace-fixer
         language: system
         types: [text]
-        stages: [commit, push, manual]
+        stages: [pre-commit, pre-push, manual]
       - id: check-toml
         name: Check Toml
         entry: check-toml
@@ -50,10 +50,10 @@ repos:
       #   args: ["--config=.flake8"]
       #   require_serial: true
   - repo: https://github.com/prettier/pre-commit
-    rev: v2.1.2
+    rev: 57f39166b5a5a504d6808b87ab98d41ebf095b46
     hooks:
       - id: prettier
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.6.1
+    rev: 0.8.0
     hooks:
       - id: nbstripout
