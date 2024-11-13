@@ -200,7 +200,8 @@ def display_data_in_tabs(tabs, df_list, start, end):
 
             # Set up columns for Info and Error buttons
             col1, col2, col3 = st.columns([1, 4, 1])
-            filename = filename.split(".")[0]
+           #filename = filename.split(".")[0]
+            filename, _ = filename.rsplit('.', 1)
             with st.container(border=True):
                 with col1:
                     # Display Info Log if button is clicked
