@@ -16,7 +16,8 @@ class CustomLogger(logging.Logger):
             logging_cfg = yaml.safe_load(file)
 
         # Set up log file paths
-        base_name = os.path.basename(log_file).split(".")[0]
+        #base_name = os.path.basename(log_file).split(".")[0]
+        base_name, _ = os.path.basename(log_file).rsplit('.', 1)
         info_out_path = os.path.join(log_output_path, f"{base_name}.info.log")
         error_out_path = os.path.join(log_output_path, f"{base_name}.error.log")
 

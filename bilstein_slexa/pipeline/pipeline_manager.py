@@ -147,7 +147,7 @@ def pipeline_run():
                     df = item["data_frame"]
 
                     # Set up logging for each file
-                    logger = setup_logger(item["file_name"], config)
+                    logger = setup_logger(f"{item['file_name']}.pk", config)
 
                     # Fix data type after loading pickle file
                     df = fix_data_types(df, schema)
