@@ -40,6 +40,7 @@ from bilstein_slexa.pipeline.data_augmentaion import (
     add_material_choice,
     add_access_default,
     add_auction_type,
+    add_supplier_min,
 )
 from bilstein_slexa.pipeline.aggregation import aggregate_data
 from bilstein_slexa.config.logging_system import setup_logger
@@ -48,6 +49,8 @@ from bilstein_slexa.pipeline.grade_checker import GradeChecker
 from bilstein_slexa.pipeline.finish_checker import FinishChecker
 from bilstein_slexa.pipeline.generate_gsheet import get_gsheet_url
 from bilstein_slexa.utils.helper import delete_file, delete_all_files
+from bilstein_slexa.pipeline.material_checker import add_material
+from bilstein_slexa.pipeline.category_checker import add_category
 
 # Define global variable to track the status of Excelsheet
 status = None
@@ -213,8 +216,17 @@ def pipeline_run():
                             # Add access default column
                             df = add_access_default(df)
 
-                            # Add auction type columns
+                            # Add auction type column
                             df = add_auction_type(df)
+
+                            # Add supplier min column (same with min_price)
+                            df = add_supplier_min(df)
+
+                            # Add material columns
+                            df = add_material(df)
+
+                            # Add category columns
+                            df = add_category(df)
 
                             # Update status
                             status = True

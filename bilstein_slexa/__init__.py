@@ -34,9 +34,18 @@ source_schema_path = str(
     Path(__file__).parent.resolve() / "config/schemas/source_bilstein_schema_v1.json"
 )
 
+material_schema_path = str(
+    Path(__file__).parent.resolve() / "config/schemas/material_grade_mapping.json"
+)
+
 g_sheet_schema_path = str(
     Path(__file__).parent.resolve() / "config/schemas/ref_gsheet_schema.json"
 )
+
+category_path = str(
+    Path(__file__).parent.resolve() / "config/schemas/category_mapping.json"
+)
+
 
 # Read log config file
 log_config_path = Path(__file__).parent.resolve() / "config/logging.yaml"

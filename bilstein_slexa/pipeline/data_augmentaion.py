@@ -70,7 +70,7 @@ def convert_warehouse_address(df: pd.DataFrame) -> pd.DataFrame:
             for idx, loc in df[column_name].items():
                 if isinstance(loc, str):  # Ensure location ID is a string
                     if loc in add_dict:
-                        df.at[idx, column_name] = add_dict[loc]
+                        df.at[idx, column_name] = add_dict[loc]["UUID"]
                     else:
                         df.at[idx, column_name] = np.nan
                         message = f"Location ID '{loc}' not found in YAML file. Bundle ID: {df['bundle_id'].iloc[idx]}"
@@ -108,6 +108,28 @@ def add_article_id(df: pd.DataFrame) -> pd.DataFrame:
 
     except Exception as e:
         logger.error(f"Error in updating 'article_id' column: {e}")
+        return df
+
+
+def add_supplier_min(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Update the 'article_id' column in the DataFrame by copying values from the 'bundle_id' column.
+    If 'bundle_id' does not exist or an error occurs, logs the error.
+
+    Args:
+        df (pd.DataFrame): The DataFrame to modify.
+
+    Returns:
+        pd.DataFrame: DataFrame with the updated 'supplier_min' column.
+    """
+    try:
+        # Update 'article_id' by copying 'bundle_id'
+        df["supplier_min"] = df["min_price"]
+        logger.info("The 'supplier_min' column was updated successfully.")
+        return df
+
+    except Exception as e:
+        logger.error(f"Error in updating 'supplier_min' column: {e}")
         return df
 
 
@@ -196,4 +218,34 @@ def add_auction_type(df: pd.DataFrame) -> pd.DataFrame:
 
     except Exception as e:
         logger.error(f"Error in updating 'auction_type' column: {e}")
+        return df
+
+
+def add_auction_tag(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Update the 'auction_type' column in the DataFrame based on the 'action_type' value from the config.
+    If 'action_type' is not available in the config, logs an error.
+
+    Args:
+        df (pd.DataFrame): The DataFrame to modify.
+        config (dict): Configuration dictionary containing 'template_data' with 'action_type'.
+
+    Returns:
+        pd.DataFrame: DataFrame with the updated 'auction_type' column.
+    """
+    try:
+        # Verify 'template_data' and 'action_type' keys exist in the configuration
+        auction_tag = config.get("template_data", {}).get("auction_tag")
+
+        if auction_tag is None:
+            logger.error("The 'action_type' key is missing from the configuration.")
+            return df
+
+        # Update the 'auction_type' column with the config value
+        df["auction_tag"] = auction_tag
+        logger.info("The 'auction_type' column was updated successfully.")
+        return df
+
+    except Exception as e:
+        logger.error(f"Error in updating 'tag' column: {e}")
         return df
