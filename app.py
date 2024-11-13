@@ -127,7 +127,11 @@ def display_data_in_tabs(tabs, df_list, start, end):
         with tab:
             col1, col2, col3 = st.columns([3, 1, 1])
             with col1:
-                st.header(f"{filename}")
+                #st.header(f"{filename}")
+                st.markdown(
+                        f"<h2 style='font-size:25px;'>{filename}</h2>",
+                        unsafe_allow_html=True
+                        )
             with col3:
                 if status:
                     table_size = df.shape
@@ -270,7 +274,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
                     # Row 1: Form, Width, Thickness
                     col1, col2, col3 = st.columns(3)
                     with col1:
-                        st.subheader("Form Frequency")
+                        #st.markdown(f"<h2 style='font-size:25px;'>Form Frequency</h2>",unsafe_allow_html=True)
                         form_count = df["Form"].value_counts().reset_index()
                         form_count.columns = ["Form", "Count"]
                         fig_form = px.bar(
@@ -279,7 +283,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
                         st.plotly_chart(fig_form, use_container_width=True)
 
                     with col2:
-                        st.subheader("Width Distribution")
+                       # st.markdown(f"<h2 style='font-size:25px;'>Width Distribution</h2>",unsafe_allow_html=True)
                         fig_width = px.histogram(
                             df, x="Width (mm)", nbins=10, title="Width (mm)"
                         )
@@ -287,7 +291,7 @@ def display_data_in_tabs(tabs, df_list, start, end):
                         st.plotly_chart(fig_width, use_container_width=True)
 
                     with col3:
-                        st.subheader("Thickness Distribution")
+                       # st.markdown(f"<h2 style='font-size:25px;'>Thickness Distribution</h2>",unsafe_allow_html=True)
                         fig_thickness = px.histogram(
                             df, x="Thickness (mm)", nbins=10, title="Thickness (mm)"
                         )

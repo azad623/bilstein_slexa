@@ -70,7 +70,7 @@ def pipeline_run():
         excel_path_list = generate_path_list(folder_name="tmp")
         if excel_path_list and len(excel_path_list) > 0:
             for file_path in excel_path_list:
-                file_name = os.path.basename(file_path).split(".")[0]
+                file_name, _ = os.path.basename(file_path).rsplit('.', 1)
 
                 # Set up logging for each file
                 global_vars["error_list"] = []
