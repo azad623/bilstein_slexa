@@ -50,6 +50,7 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
         bool: True if schema matches; otherwise, False.
     """
     unmatched_schemas = []
+    can_be_empty_col = ["Beschreibung"]
 
     # Normalize DataFrame column names
     df.columns = [col.strip() for col in df.columns]
@@ -61,7 +62,7 @@ def validate_with_all_schemas(df: pd.DataFrame, file_path: str):
 
     if required_columns == matched_columns:
         # Check if any required columns have empty values
-        empty_columns = [col for col in required_columns if df[col].isnull().all()]
+        empty_columns = [col for col in required_columns if df[col].isnull().all() and col not in can_be_empty_col]
 
         if empty_columns:
             unmatched_schemas.append(
