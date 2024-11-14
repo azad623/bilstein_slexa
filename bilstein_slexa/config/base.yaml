@@ -50,6 +50,16 @@ template_data:
           "address": "Im Weinhof 36 Hagen DE 58119",
           "UUID": "b2c744a8-11ef-4f67-9788-1a28054b7a50",
         },
+      "200":
+        {
+          "address": "Alemannenweg 29 Hagen DE 58119",
+          "UUID": "11f234c3-f0f5-487a-b131-3629c5c9d665",
+        },
+      "300":
+        {
+          "address": "Im Weinhof 36 Hagen DE 58119",
+          "UUID": "b2c744a8-11ef-4f67-9788-1a28054b7a50",
+        },
     }
   action_type: "Blind"
   access: "Open"
