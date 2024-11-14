@@ -171,9 +171,18 @@ def translate_and_merge_description(df: pd.DataFrame) -> pd.DataFrame:
 
         # Step 3: Merge 'Beschreibung' and 'batch_number' with updated 'description' column
         df["description"] = df.apply(
-            lambda row: f"{row['description']} | {row['beschreibung']}\n -{row['batch_number']}",
-            axis=1,
-        )
+                lambda row: " | ".join(
+                    filter(
+                        None,
+                        [
+                            row['description'] if pd.notna(row['description']) else "",
+                            row['beschreibung'] if pd.notna(row['beschreibung']) else "",
+                            f"\n-{row['batch_number']}" if pd.notna(row['batch_number']) else ""
+                        ]
+                    )
+                ).strip(" | "),
+                axis=1,
+            )
 
         # Drop the intermediate 'translated_description' column if not needed
         df.drop(
